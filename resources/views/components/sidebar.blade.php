@@ -1,7 +1,7 @@
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="{{ route('dashboard') }}">APK 2025</a>
+            <a href="{{ route('dashboard') }}">SIPETA</a>
         </div>
         <ul class="sidebar-menu">
             @if (auth()->user()->roles == 'admin')

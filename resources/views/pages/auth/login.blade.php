@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>APK &mdash; 2025</title>
+    <title>SIPETA</title>
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('library/bootstrap/dist/css/bootstrap.min.css') }}">
@@ -28,11 +28,10 @@
                     <div class="m-3 p-4">
                         <img src="{{ asset('img/tanbu.png') }}" alt="logo" width="70"
                             class="shadow-light  mb-5 mt-2">
-                        <h4 class="text-dark font-weight-normal">Welcome to <span class="font-weight-bold">APK2025</span>
+                        <h4 class="text-dark font-weight-normal">Welcome to <span class="font-weight-bold">SIPETA</span>
                         </h4>
-                        <p class="text-muted">Aplikasi Keuangan (APK) Kecamatan
-                            Teluk Kepayang, membuat penatausahaan
-                            keuangan menjadi lebih cepat</p>
+                        <p class="text-muted">Sistem Pelaporan dan Pengelolaan Keuangan dan Aset (SIPETA) Kecamatan
+                            Teluk Kepayang terintegrasi</p>
                         <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate="">
                             @csrf
                             <div class="form-group">
