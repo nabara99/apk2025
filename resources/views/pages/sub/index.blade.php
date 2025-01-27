@@ -57,7 +57,7 @@
                                                             <i class="fas fa-edit"></i>
                                                             Edit
                                                         </a>
-                                                        <form action="{{ route('sub.destroy', $sub->id) }}" method="POST"
+                                                        {{-- <form action="{{ route('sub.destroy', $sub->id) }}" method="POST"
                                                             class="ml-2">
                                                             <input type="hidden" name="_method" value="DELETE" />
                                                             <input type="hidden" name="_token"
@@ -66,7 +66,7 @@
                                                                 onclick="return confirm('Yakin menghapus data?')">
                                                                 <i class="fas fa-trash"></i> Hapus
                                                             </button>
-                                                        </form>
+                                                        </form> --}}
                                                     </div>
                                                 </td>
                                             </tr>

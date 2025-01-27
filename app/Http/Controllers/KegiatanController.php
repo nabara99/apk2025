@@ -78,7 +78,6 @@ class KegiatanController extends Controller
      */
     public function destroy(Kegiatan $kegiatan)
     {
-        $kegiatan->delete();
-        return redirect()->route('kegiatan.index')->with('success', 'Kegiatan berhasil dihapus');
+        
     }
 }

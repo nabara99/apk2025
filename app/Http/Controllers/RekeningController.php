@@ -74,7 +74,6 @@ class RekeningController extends Controller
      */
     public function destroy(Rekening $rekening)
     {
-        $rekening->delete();
-        return redirect()->route('rekening.index')->with('success', 'Rekening berhasil dihapus');
+        
     }
 }
