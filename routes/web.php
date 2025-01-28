@@ -11,6 +11,7 @@ use App\Http\Controllers\PenerimaContoller;
 use App\Http\Controllers\PptkContoller;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\RekeningController;
+use App\Http\Controllers\SkController;
 use App\Http\Controllers\SpdController;
 use App\Http\Controllers\SpdRinciController;
 use App\Http\Controllers\SubController;
@@ -64,4 +65,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('pajak-kwitansi', PajakKwitansiController::class);
     Route::get('/tax/{id}', [SpdController::class, 'tax'])->name('tax');
     Route::get('/pajak-spd/{id}', [PajakKwitansiController::class, 'pajakSpd'])->name('pajak-spd');
+    Route::resource('sk', SkController::class)->middleware('userAccess:user,admin');
 });

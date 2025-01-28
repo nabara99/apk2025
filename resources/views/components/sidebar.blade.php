@@ -12,29 +12,6 @@
                 </li>
             @endif
             @if (auth()->user()->roles == 'user')
-                <li class="menu-header">Anggaran</li>
-                <li class="{{ str_contains(Route::currentRouteName(), 'program') ? 'active' : '' }}">
-                    <a href="{{ route('program.index') }}"><i
-                            class="fa-regular fa-note-sticky"></i><span>Program</span></a>
-                </li>
-                <li class="{{ str_contains(Route::currentRouteName(), 'kegiatan') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('kegiatan.index') }}"><i
-                            class="fa-solid fa-book"></i><span>Kegiatan</span></a>
-                </li>
-                <li class="{{ str_contains(Route::currentRouteName(), 'sub') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('sub.index') }}"><i class="fa-solid fa-file-pen"></i><span>Sub
-                            Kegiatan</span></a>
-                </li>
-                <li class="{{ str_contains(Route::currentRouteName(), 'rekening') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('rekening.index') }}"><i
-                            class="fa-solid fa-database"></i><span>Kode
-                            Rekening</span></a>
-                </li>
-                <li class="{{ str_contains(Route::currentRouteName(), 'anggaran') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('anggaran.index') }}"><i
-                            class="fa-solid fa-money-check-dollar"></i><span>Anggaran
-                        </span></a>
-                </li>
                 <li class="menu-header">Perbendaharaan</li>
                 <li class="{{ str_contains(Route::currentRouteName(), 'spd') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('spd.index') }}"><i
@@ -60,6 +37,11 @@
                 <li class="{{ str_contains(Route::currentRouteName(), 'penerima') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('penerima.index') }}"><i
                             class="fa-solid fa-users-gear"></i><span>Rekanan
+                        </span></a>
+                </li>
+                <li class="{{ str_contains(Route::currentRouteName(), 'sk') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('sk.index') }}">
+                        <i class="fa-solid fa-file-pdf"></i><span>SK
                         </span></a>
                 </li>
             @endif
@@ -125,6 +107,11 @@
                 <li class="{{ str_contains(Route::currentRouteName(), 'penerima') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('penerima.index') }}"><i
                             class="fa-solid fa-users-gear"></i><span>Rekanan
+                        </span></a>
+                </li>
+                <li class="{{ str_contains(Route::currentRouteName(), 'sk') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('sk.index') }}">
+                        <i class="fa-solid fa-file-pdf"></i><span>SK
                         </span></a>
                 </li>
             @endif

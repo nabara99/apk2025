@@ -75,7 +75,7 @@ class PenerimaContoller extends Controller
      */
     public function destroy(Penerima $penerima)
     {
-        $penerima->delete();
-        return redirect()->route('penerima.index')->with('success', 'Rekanan berhasil dihapus');
+        // $penerima->delete();
+        // return redirect()->route('penerima.index')->with('success', 'Rekanan berhasil dihapus');
     }
 }
