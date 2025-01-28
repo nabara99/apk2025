@@ -68,6 +68,35 @@
     <!-- Template JS File -->
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const alertElement = document.querySelector('.alert');
+            const progressBar = alertElement.querySelector('.progress-bar');
+            const alertDuration = 2000;
+
+            if (alertElement && progressBar) {
+                let startTime = Date.now();
+
+                function updateProgressBar() {
+                    const elapsedTime = Date.now() - startTime;
+                    const progress = Math.max(0, 100 - (elapsedTime / alertDuration) * 100);
+                    progressBar.style.width = progress + '%';
+
+                    if (progress > 0) {
+                        requestAnimationFrame(updateProgressBar);
+                    }
+                }
+
+                updateProgressBar();
+
+                window.setTimeout(() => {
+                    alertElement.classList.add('fade');
+                    setTimeout(() => alertElement.remove(), 500);
+                }, alertDuration);
+            }
+        });
+    </script>
 </body>
 
 </html>

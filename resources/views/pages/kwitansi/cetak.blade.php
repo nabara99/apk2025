@@ -31,7 +31,7 @@ setlocale(LC_TIME, 'id_ID');
         </tr>
         <tr>
             <td colspan="9" style="font-size: 8pt">
-                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                 Alamat : Jln. Valgosons Nomor 01 Desa Teluk Kepayang Kode Pos 72272
             </td>
         </tr>

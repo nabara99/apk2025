@@ -12,7 +12,8 @@
         <section class="section">
             <div class="section-body">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-8"></div>
+                    <div class="col-4">
                         @include('layouts.alert')
                     </div>
                 </div>

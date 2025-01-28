@@ -1,16 +1,7 @@
 @if ($message = Session::get('success'))
-    <div class="row">
-        <div class="col-6 col-md-6 col-lg-6">
-        </div>
-        <div class="col-6 col-md-6 col-lg-6">
-            <div class="alert alert-success alert-dismissible show fade">
-                <div class="alert-body">
-                    <button class="close" data-dismiss="alert">
-                        <span>x</span>
-                    </button>
-                    <p>{{ $message }}</p>
-                </div>
-            </div>
-        </div>
+    <div class="alert alert-warning" role="alert">
+        <i class="link-icon" data-feather="smile"></i> {{ $message }}
+        <div class="progress-bar" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 5px; background-color: rgba(124, 159, 235, 0.5);"></div>
     </div>
 @endif
+
