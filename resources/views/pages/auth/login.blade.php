@@ -78,15 +78,15 @@
                     </div>
                 </div>
                 <div class="col-lg-8 col-12 order-lg-2 min-vh-100 background-walk-y position-relative overlay-gradient-bottom order-1"
-                    data-background="https://images.unsplash.com/photo-1680863864094-b8e9b2cb036f?q=80&w=2144&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+                    data-background="https://images.unsplash.com/photo-1695550359172-5ad6e9143106?q=80&w=2127&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
                     <div class="absolute-bottom-left index-2">
                         <div class="text-light p-5 pb-2">
                             <div class="mb-5 pb-3">
-                                <h1 class="display-4 font-weight-bold mb-2">Wonderlane</h1>
-                                <h5 class="font-weight-normal text-muted-transparent">Nature, Wallpaper</h5>
+                                <h1 class="display-4 font-weight-bold mb-2">Totoro</h1>
+                                <h5 class="font-weight-normal text-muted-transparent">Gibli Studio</h5>
                             </div>
                             Photo by <a class="text-light bb" target="_blank"
-                                href="https://unsplash.com/@wonderlane">Wonderlane</a> on <a
+                                href="https://unsplash.com/@anniehatuanh">Anniehatuanh</a> on <a
                                 class="text-light bb" target="_blank" href="https://unsplash.com">Unsplash</a>
                         </div>
                     </div>

@@ -25,14 +25,18 @@
                                     <table class="table-striped table">
                                         <tr>
                                             <th>No</th>
-                                            <th>Nama SK</th>
+                                            <th>Nomor SK</th>
+                                            <th>Hal</th>
+                                            <th>Penandatangan</th>
                                             <th>File</th>
                                             <th>Aksi</th>
                                         </tr>
                                         @foreach ($sks as $index => $sk)
                                             <tr>
                                                 <td>{{ ++$index }}</td>
+                                                <td>{{ $sk->number_sk }}</td>
                                                 <td>{{ $sk->name_sk }}</td>
+                                                <td>{{ $sk->signer }}</td>
                                                 <td>
                                                     @if ($sk->scan)
                                                         <div class="badge badge-success"></div>
