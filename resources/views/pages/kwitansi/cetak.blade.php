@@ -17,7 +17,7 @@ setlocale(LC_TIME, 'id_ID');
     <table border="0" style="text-align: left; width: 100%; font-family: arial;">
         <tr>
             <td rowspan="3"><img src="{{ asset('img/tanbu.png') }}" alt="logo" width="70"
-                    class="shadow-light  mb-5 mt-2"></td>
+                    class="shadow-light  mb-2 mt-1"></td>
             <td colspan="8" style="font-size: 14pt;">
                 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                 <b>PEMERINTAH KABUPATEN TANAH BUMBU</b>
@@ -125,16 +125,27 @@ setlocale(LC_TIME, 'id_ID');
             <td>Untuk Pembayaran</td>
             <td>:</td>
         </tr>
-        <tr style="font-size: 8pt;">
-            <td>PPN</td>
-            <td>:</td>
-            <td>Rp. </td>
-            <td style="text-align: right;">
-                {{ number_format($kwitansi->ppn) }},-
-            </td>
-            <td></td>
-            <td colspan="3" rowspan="4">{{ $kwitansi->hal }}</td>
-        </tr>
+        @if ($kwitansi->ppn)
+            <tr style="font-size: 8pt;">
+                <td>PPN</td>
+                <td>:</td>
+                <td>Rp. </td>
+                <td style="text-align: right;">
+                    {{ number_format($kwitansi->ppn) }},-
+                </td>
+                <td></td>
+                <td colspan="3" rowspan="4">{{ $kwitansi->hal }}</td>
+            </tr>
+        @else
+            <tr style="font-size: 8pt;">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="3" rowspan="3">{{ $kwitansi->hal }}</td>
+            </tr>
+        @endif
         <tr style="font-size: 8pt;">
             <td>PPh 21</td>
             <td>:</td>
@@ -143,30 +154,56 @@ setlocale(LC_TIME, 'id_ID');
                 {{ number_format($kwitansi->pph21) }},-
             </td>
         </tr>
-        <tr style="font-size: 8pt;">
-            <td>PPh 22</td>
-            <td>:</td>
-            <td>Rp. </td>
-            <td style="text-align: right;">
-                {{ number_format($kwitansi->pph22) }},-
-            </td>
-        </tr>
-        <tr style="font-size: 8pt;">
-            <td>PPh 23</td>
-            <td>:</td>
-            <td>Rp. </td>
-            <td style="text-align: right;">
-                {{ number_format($kwitansi->pph23) }},-
-            </td>
-        </tr>
-        <tr style="font-size: 8pt;">
-            <td>Pajak Daerah</td>
-            <td>:</td>
-            <td>Rp. </td>
-            <td style="text-align: right;">
-                {{ number_format($kwitansi->pdaerah) }},-
-            </td>
-        </tr>
+        @if ($kwitansi->pph22)
+            <tr style="font-size: 8pt;">
+                <td>PPh 22</td>
+                <td>:</td>
+                <td>Rp. </td>
+                <td style="text-align: right;">
+                    {{ number_format($kwitansi->pph22) }},-
+                </td>
+            </tr>
+        @endif
+        @if ($kwitansi->pph23)
+            <tr style="font-size: 8pt;">
+                <td>PPh 23</td>
+                <td>:</td>
+                <td>Rp. </td>
+                <td style="text-align: right;">
+                    {{ number_format($kwitansi->pph23) }},-
+                </td>
+            </tr>
+        @endif
+        @if ($kwitansi->pdaerah)
+            <tr style="font-size: 8pt;">
+                <td>Pajak Daerah</td>
+                <td>:</td>
+                <td>Rp. </td>
+                <td style="text-align: right;">
+                    {{ number_format($kwitansi->pdaerah) }},-
+                </td>
+            </tr>
+        @endif
+        @if ($kwitansi->iwp1)
+            <tr style="font-size: 8pt;">
+                <td>IWP 1</td>
+                <td>:</td>
+                <td>Rp. </td>
+                <td style="text-align: right;">
+                    {{ number_format($kwitansi->iwp1) }},-
+                </td>
+            </tr>
+        @endif
+        @if ($kwitansi->iwp8)
+            <tr style="font-size: 8pt;">
+                <td>IWP 8</td>
+                <td>:</td>
+                <td>Rp. </td>
+                <td style="text-align: right;">
+                    {{ number_format($kwitansi->iwp8) }},-
+                </td>
+            </tr>
+        @endif
         <tr style="font-size: 8pt;">
             <td>Jumlah Dibayarkan</td>
             <td>:</td>

@@ -271,7 +271,18 @@
                                     name="pph23">
                             </div>
                         </div>
-
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-6"><label for="pph22">IWP 1</label>
+                                <input type="text" class="number-separator form-control" id="iwp1"
+                                    name="iwp1">
+                            </div>
+                            <div class="col-6"><label for="pph23">IWP 8</label>
+                                <input type="text" class="number-separator form-control" id="iwp8"
+                                    name="iwp8">
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <div class="row">
@@ -509,9 +520,11 @@
             var pph21 = parseFloat($('#pph21').val().replace(/[^0-9.-]/g, '')) || 0;
             var pph22 = parseFloat($('#pph22').val().replace(/[^0-9.-]/g, '')) || 0;
             var pph23 = parseFloat($('#pph23').val().replace(/[^0-9.-]/g, '')) || 0;
+            var iwp1 = parseFloat($('#iwp1').val().replace(/[^0-9.-]/g, '')) || 0;
+            var iwp8 = parseFloat($('#iwp8').val().replace(/[^0-9.-]/g, '')) || 0;
             var pajakdaerah = parseFloat($('#pajakdaerah').val().replace(/[^0-9.-]/g, '')) || 0;
 
-            var total_pajak = ppn + pph21 + pph22 + pph23 + pajakdaerah;
+            var total_pajak = ppn + pph21 + pph22 + pph23 + pajakdaerah + iwp1 + iwp8;
 
             var sisa_pembayaran = total_belanja - total_pajak;
 
@@ -753,6 +766,8 @@
                 var pph21 = $('#pph21').val();
                 var pph22 = $('#pph22').val();
                 var pph23 = $('#pph23').val();
+                var iwp1 = $('#iwp1').val();
+                var iwp8 = $('#iwp8').val();
                 var pajakdaerah = $('#pajakdaerah').val();
                 var sisa = $('#sisa').val();
                 var anggaran_id = $('#anggaran_id').val();
@@ -791,6 +806,8 @@
                         pph21: pph21,
                         pph22: pph22,
                         pph23: pph23,
+                        iwp1: iwp1,
+                        iwp8: iwp8,
                         pajakdaerah: pajakdaerah,
                         sisa: sisa,
                         anggaran_id: anggaran_id,

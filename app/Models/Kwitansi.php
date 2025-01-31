@@ -22,16 +22,13 @@ class Kwitansi extends Model
         'pph22',
         'pph23',
         'pdaerah',
+        'iwp1',
+        'iwp8',
         'sisa',
         'penerima_id',
         'anggaran_id',
         'file',
     ];
-
-    // public function tempKwitansis()
-    // {
-    //     return $this->belongsTo(TempKwitansi::class);
-    // }
 
     public function penerima()
     {

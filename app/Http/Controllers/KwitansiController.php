@@ -82,6 +82,8 @@ class KwitansiController extends Controller
                 'pph22' => str_replace(",", "", $request->input('pph22')),
                 'pph23' => str_replace(",", "", $request->input('pph23')),
                 'pdaerah' => str_replace(",", "", $request->input('pajakdaerah')),
+                'iwp1' => str_replace(",", "", $request->input('iwp1')),
+                'iwp8' => str_replace(",", "", $request->input('iwp8')),
                 'sisa' => str_replace(",", "", $request->input('sisa')),
             ]);
 
@@ -134,6 +136,8 @@ class KwitansiController extends Controller
             'pph22' => str_replace(",", "", $request->pph22),
             'pph23' => str_replace(",", "", $request->pph23),
             'pdaerah' => str_replace(",", "", $request->pdaerah),
+            'iwp1' => str_replace(",", "", $request->iwp1),
+            'iwp8' => str_replace(",", "", $request->iwp8),
             'sisa' => str_replace(",", "", $request->sisa),
             'penerima_id' => $request->penerima_id,
             'anggaran_id' => $request->anggaran_id,

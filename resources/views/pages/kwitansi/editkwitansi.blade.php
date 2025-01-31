@@ -133,6 +133,18 @@
                                     <div class="form-group">
                                         <div class="row gutters-sm">
                                             <div class="col-2 col-md-2 col-sm-2">
+                                                <label for="iwp1">IWP 1</label>
+                                                <input type="text" class="number-separator form-control"
+                                                    id="iwp1" name="iwp1"
+                                                    value="{{ number_format($kwitansis->iwp1) }}">
+                                            </div>
+                                            <div class="col-2 col-md-2 col-sm-2">
+                                                <label for="iwp8">IWP 8</label>
+                                                <input type="text" class="number-separator form-control"
+                                                    id="iwp8" name="iwp8"
+                                                    value="{{ number_format($kwitansis->iwp8) }}">
+                                            </div>
+                                            <div class="col-2 col-md-2 col-sm-2">
                                                 <label for="pdaerah">Pajak Daerah</label>
                                                 <input type="text" class="number-separator form-control"
                                                     id="pdaerah" name="pdaerah"
@@ -141,7 +153,7 @@
                                             <div class="col-2 col-md-2 col-sm-2">
                                                 <label for="sisa">Sisa</label>
                                                 <input type="text" class="form-control" id="sisa" name="sisa"
-                                                    value="{{ number_format($kwitansis->sisa) }}" readonly>
+                                                    value="{{ $kwitansis->sisa }}" readonly>
                                             </div>
                                             <div class="col-10 col-md-8 col-sm-8">
                                                 <label for="uraian">Uraian</label>
@@ -490,9 +502,11 @@
             var pph21 = parseFloat($('#pph21').val().replace(/[^0-9.-]/g, '')) || 0;
             var pph22 = parseFloat($('#pph22').val().replace(/[^0-9.-]/g, '')) || 0;
             var pph23 = parseFloat($('#pph23').val().replace(/[^0-9.-]/g, '')) || 0;
+            var iwp1 = parseFloat($('#iwp1').val().replace(/[^0-9.-]/g, '')) || 0;
+            var iwp8 = parseFloat($('#iwp8').val().replace(/[^0-9.-]/g, '')) || 0;
             var pdaerah = parseFloat($('#pdaerah').val().replace(/[^0-9.-]/g, '')) || 0;
 
-            var total_pajak = ppn + pph21 + pph22 + pph23 + pdaerah;
+            var total_pajak = ppn + pph21 + pph22 + pph23 + pdaerah + iwp1 + iwp8;
 
             var sisa_pembayaran = total_belanja - total_pajak;
 
