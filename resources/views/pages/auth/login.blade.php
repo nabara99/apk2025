@@ -28,7 +28,7 @@
                     <div class="m-3 p-4">
                         <img src="{{ asset('img/tanbu.png') }}" alt="logo" width="70"
                             class="shadow-light  mb-5 mt-2">
-                        <h4 class="text-dark font-weight-normal">Welcome to <span class="font-weight-bold">SIPETA</span>
+                        <h4 class="text-dark font-weight-normal">Welcome to <span class="font-weight-bold">SIPETA</span> Kecamatan Teluk Kepayang
                         </h4>
                         <p class="text-muted">Sistem Pelaporan dan Pengelolaan Keuangan dan Aset (SIPETA) Kecamatan
                             Teluk Kepayang terintegrasi</p>
