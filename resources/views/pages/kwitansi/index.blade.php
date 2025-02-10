@@ -55,7 +55,7 @@ setlocale(LC_TIME, 'id_ID');
                                         </tr>
                                         @foreach ($kwitansis as $kwitansi)
                                             <tr>
-                                                <td>{{ $kwitansi->kw_id }}/KSL/2024
+                                                <td>{{ $kwitansi->kw_id }}/KTK/2025
                                                 </td>
                                                 <td>{{ Carbon::parse($kwitansi->tgl)->formatLocalized('%e %B %Y') }}</td>
                                                 <td>{{ $kwitansi->hal }}</td>
