@@ -4,6 +4,7 @@ use App\Http\Controllers\AnggaranController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DecisionController;
 use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\KibController;
 use App\Http\Controllers\KwitansiController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PajakKwitansiController;
@@ -43,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('sub', SubController::class)->middleware('userAccess:user,admin');
     Route::resource('rekening', RekeningController::class)->middleware('userAccess:user,admin');
     Route::resource('anggaran', AnggaranController::class);
+    Route::resource('kib', KibController::class);
     Route::resource('spd', SpdController::class);
     Route::resource('pptk', PptkContoller::class);
     Route::resource('penerima', PenerimaContoller::class);
@@ -66,4 +68,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tax/{id}', [SpdController::class, 'tax'])->name('tax');
     Route::get('/pajak-spd/{id}', [PajakKwitansiController::class, 'pajakSpd'])->name('pajak-spd');
     Route::resource('sk', SkController::class)->middleware('userAccess:user,admin');
+    Route::post('/kib/upload', [KibController::class, 'upload'])->name('kib.upload');
 });

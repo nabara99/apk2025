@@ -93,6 +93,12 @@
                             class="fa-solid fa-cart-shopping"></i><span>Kwitansi
                         </span></a>
                 </li>
+                <li class="menu-header">Aset</li>
+                <li class="{{ str_contains(Route::currentRouteName(), 'kib') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('kib.index') }}"><i
+                            class="fa-solid fa-screwdriver-wrench"></i><span>KIB
+                        </span></a>
+                </li>
                 <li class="menu-header">Data Umum</li>
                 <li class="{{ str_contains(Route::currentRouteName(), 'pptk') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('pptk.index') }}"><i

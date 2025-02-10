@@ -64,17 +64,23 @@ setlocale(LC_TIME, 'id_ID');
                                                 <td>
                                                     @if ($kwitansi->file)
                                                         <a href="{{ url($kwitansi->file) }}" target="blank"
-                                                            title="Lihat File"><i
-                                                                class="fa-regular fa-folder-open"></i></i></a>
+                                                            title="Lihat File">
+                                                            <i class="fa-regular fa-folder-open"></i>
+                                                        </a>
                                                     @else
-                                                        @if ($kwitansi->anggaran->rekening->kode_rekening == '5.1.02.04.01.0003')
+                                                        @if (
+                                                            $kwitansi->anggaran &&
+                                                                $kwitansi->anggaran->rekening &&
+                                                                $kwitansi->anggaran->rekening->kode_rekening == '5.1.02.04.01.0003')
+                                                            {{-- Kosong, tidak menampilkan apa pun --}}
                                                         @else
-                                                            <button class="btn btn-sm btn-outline-danger"
-                                                                title="Tidak ada"><i
-                                                                    class="fa-regular fa-circle-xmark"></i></button>
+                                                            <button class="btn btn-sm btn-outline-danger" title="Tidak ada">
+                                                                <i class="fa-regular fa-circle-xmark"></i>
+                                                            </button>
                                                         @endif
                                                     @endif
                                                 </td>
+
                                                 <td>
                                                     <div class="d-flex justify-content-left">
                                                         <button class="btn btn-sm btn-info"
