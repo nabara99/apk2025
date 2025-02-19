@@ -33,8 +33,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    if(auth()->check()) {
+        return redirect('/home');
+    }
     return view('pages.auth.login');
-});
+})->name('/');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('dashboard');

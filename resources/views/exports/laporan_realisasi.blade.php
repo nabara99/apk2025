@@ -71,7 +71,7 @@
                             $total_realisasi = $realisasi->januari_total + $realisasi->februari_total + $realisasi->maret_total + $realisasi->april_total + $realisasi->mei_total + $realisasi->juni_total + $realisasi->juli_total + $realisasi->agustus_total + $realisasi->september_total + $realisasi->oktober_total + $realisasi->november_total + $realisasi->desember_total;
                             $persentase = $total_realisasi > 0 ? ($total_realisasi / $realisasi->pagu) * 100 : 0;
                         @endphp
-                        {{ $persentase, 2, ',', '.' }}
+                        {{ number_format($persentase, 2, ',', '.') }}
                     </td>
                 </tr>
             @endforeach
