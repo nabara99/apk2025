@@ -61,9 +61,9 @@
                                                 <td>{{ $kib->place }}</td>
                                                 <td>{{ $kib->year }}</td>
                                                 <td>
-                                                    <a href="{{ route('kib.edit', $kib->id) }}" class="btn btn-sm"
+                                                    <a href="{{ route('kib.edit', $kib->id) }}" class="btn btn-sm btn-warning"
                                                         title="Edit">
-                                                        <i class="fa-solid fa-pencil"></i></a>
+                                                        <i class="fa fa-edit"></i></a>
                                                     {{-- <a href="{{ route('kib.generate.qr', $kib->id) }}" class="btn btn-sm"
                                                         title="Generate QR Code">
                                                         <i class="fa-solid fa-barcode"></i>

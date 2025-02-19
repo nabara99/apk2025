@@ -69,4 +69,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pajak-spd/{id}', [PajakKwitansiController::class, 'pajakSpd'])->name('pajak-spd');
     Route::resource('sk', SkController::class)->middleware('userAccess:user,admin');
     Route::post('/kib/upload', [KibController::class, 'upload'])->name('kib.upload');
+    Route::get('/laporan-realisasi/export', [LaporanController::class, 'exportExcel'])->name('laporan.realisasi.export');
 });

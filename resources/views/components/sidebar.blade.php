@@ -24,16 +24,6 @@
                         </span></a>
                 </li>
                 <li class="menu-header">Data Umum</li>
-                <li class="{{ str_contains(Route::currentRouteName(), 'pptk') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('pptk.index') }}"><i
-                            class="fa-solid fa-user-check"></i><span>PPTK
-                        </span></a>
-                </li>
-                <li class="{{ str_contains(Route::currentRouteName(), 'pengelola') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('pengelola.index') }}"><i
-                            class="fa-solid fa-user-pen"></i><span>Pengelola
-                        </span></a>
-                </li>
                 <li class="{{ str_contains(Route::currentRouteName(), 'penerima') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('penerima.index') }}"><i
                             class="fa-solid fa-users-gear"></i><span>Rekanan
@@ -151,6 +141,12 @@
                 </li>
             @endif
             @if (auth()->user()->roles == 'viewer')
+                <li class="menu-header">Aset</li>
+                <li class="{{ str_contains(Route::currentRouteName(), 'kib') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('kib.index') }}"><i
+                            class="fa-solid fa-screwdriver-wrench"></i><span>KIB
+                        </span></a>
+                </li>
                 <li class="menu-header">SPJ</li>
                 <li class="{{ str_contains(Route::currentRouteName(), 'view') ? 'active' : '' }}">
                     <a href="{{ route('view.kwitansi') }}"><i class="fa-solid fa-users"></i>

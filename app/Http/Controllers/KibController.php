@@ -47,9 +47,11 @@ class KibController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Kib $kib)
+    public function edit($id)
     {
-        //
+        $kib = Kib::findOrFail($id);
+
+        return view('pages.kib.edit', compact('kib'));
     }
 
     /**

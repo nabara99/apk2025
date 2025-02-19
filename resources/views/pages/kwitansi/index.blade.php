@@ -100,7 +100,6 @@ setlocale(LC_TIME, 'id_ID');
                                                     </div>
                                                 </td>
                                             </tr>
-                                            </tr>
                                         @endforeach
                                     </table>
                                 </div>

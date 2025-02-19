@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LaporanRealisasiExport;
+use App\Exports\LaporanRenjaExport;
 use App\Models\Decision;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\RealisasiBelanjaExport;
 
 class LaporanController extends Controller
 {
@@ -53,54 +57,74 @@ class LaporanController extends Controller
 
     public function laporanRealisasi()
     {
-        $realisasiBelanja = DB::table('temp_kwitansis')
-            ->select(
-                'anggarans.uraian as uraian',
-                'anggarans.pagu as pagu',
-                'anggarans.sisa_pagu as sisa_pagu',
-                'rekenings.kode_rekening as kode_rekening',
-                'rekenings.nama_rekening as nama_rekening',
-                'subs.kode_sub as kode_sub',
-                'subs.nama_sub as nama_sub',
-                'kegiatans.kode_kegiatan as kode_kegiatan',
-                'programs.kode_program as kode_program',
-                DB::raw('SUM(total) AS total'), // Menggunakan fungsi agregasi SUM untuk mendapatkan total
-                DB::raw('MONTH(kwitansis.tgl) AS bulan')
-            )
-            ->join('kwitansis', 'temp_kwitansis.kwitansi_id', '=', 'kwitansis.kw_id')
-            ->join('anggarans', 'temp_kwitansis.anggaran_id', '=', 'anggarans.id')
-            ->join('rekenings', 'anggarans.rekening_id', '=', 'rekenings.id')
-            ->join('subs', 'anggarans.sub_id', '=', 'subs.id')
-            ->join('kegiatans', 'subs.kegiatan_id', '=', 'kegiatans.id')
-            ->join('programs', 'kegiatans.program_id', '=', 'programs.id')
-            ->groupBy('anggarans.uraian', 'anggarans.pagu', 'anggarans.sisa_pagu', 'rekenings.kode_rekening',
-            'rekenings.nama_rekening', 'subs.kode_sub', 'subs.nama_sub', 'kegiatans.kode_kegiatan',
-            'programs.kode_program', 'bulan');
+        $realisasiBelanja = DB::table('anggarans')
+        ->select(
+            'anggarans.uraian as uraian',
+            'anggarans.pagu as pagu',
+            'anggarans.sisa_pagu as sisa_pagu',
+            'rekenings.kode_rekening as kode_rekening',
+            'rekenings.nama_rekening as nama_rekening',
+            'subs.kode_sub as kode_sub',
+            'subs.nama_sub as nama_sub',
+            'kegiatans.kode_kegiatan as kode_kegiatan',
+            'programs.kode_program as kode_program',
+            DB::raw('SUM(temp_kwitansis.total) AS total'),
+            DB::raw('MONTH(kwitansis.tgl) AS bulan')
+        )
+        ->leftJoin('temp_kwitansis', 'anggarans.id', '=', 'temp_kwitansis.anggaran_id')
+        ->leftJoin('kwitansis', 'temp_kwitansis.kwitansi_id', '=', 'kwitansis.kw_id')
+        ->join('rekenings', 'anggarans.rekening_id', '=', 'rekenings.id')
+        ->join('subs', 'anggarans.sub_id', '=', 'subs.id')
+        ->join('kegiatans', 'subs.kegiatan_id', '=', 'kegiatans.id')
+        ->join('programs', 'kegiatans.program_id', '=', 'programs.id')
+        ->groupBy(
+            'anggarans.uraian',
+            'anggarans.pagu',
+            'anggarans.sisa_pagu',
+            'rekenings.kode_rekening',
+            'rekenings.nama_rekening',
+            'subs.kode_sub',
+            'subs.nama_sub',
+            'kegiatans.kode_kegiatan',
+            'programs.kode_program',
+            'bulan'
+        );
 
-        $realisasiSpd = DB::table('spd_rincis')
-            ->select(
-                'anggarans.uraian as uraian',
-                'anggarans.pagu as pagu',
-                'anggarans.sisa_pagu as sisa_pagu',
-                'rekenings.kode_rekening as kode_rekening',
-                'rekenings.nama_rekening as nama_rekening',
-                'subs.kode_sub as kode_sub',
-                'subs.nama_sub as nama_sub',
-                'kegiatans.kode_kegiatan as kode_kegiatan',
-                'programs.kode_program as kode_program',
-                DB::raw('SUM(total) AS total'), // Menggunakan fungsi agregasi SUM untuk mendapatkan total
-                DB::raw('MONTH(spds.spd_tgl) AS bulan')
-            )
-            ->join('spds', 'spd_rincis.spd_id', '=', 'spds.id')
-            ->join('anggarans', 'spd_rincis.anggaran_id', '=', 'anggarans.id')
-            ->join('rekenings', 'anggarans.rekening_id', '=', 'rekenings.id')
-            ->join('subs', 'anggarans.sub_id', '=', 'subs.id')
-            ->join('kegiatans', 'subs.kegiatan_id', '=', 'kegiatans.id')
-            ->join('programs', 'kegiatans.program_id', '=', 'programs.id')
-            ->groupBy('anggarans.uraian', 'anggarans.pagu', 'anggarans.sisa_pagu', 'rekenings.kode_rekening',
-            'rekenings.nama_rekening', 'subs.kode_sub', 'subs.nama_sub', 'kegiatans.kode_kegiatan',
-            'programs.kode_program', 'bulan');
-        $combinedQuery = $realisasiBelanja->union($realisasiSpd);
+        $realisasiSpd = DB::table('anggarans')
+        ->select(
+            'anggarans.uraian as uraian',
+            'anggarans.pagu as pagu',
+            'anggarans.sisa_pagu as sisa_pagu',
+            'rekenings.kode_rekening as kode_rekening',
+            'rekenings.nama_rekening as nama_rekening',
+            'subs.kode_sub as kode_sub',
+            'subs.nama_sub as nama_sub',
+            'kegiatans.kode_kegiatan as kode_kegiatan',
+            'programs.kode_program as kode_program',
+            DB::raw('SUM(spd_rincis.total) AS total'),
+            DB::raw('MONTH(spds.spd_tgl) AS bulan')
+        )
+        ->leftJoin('spd_rincis', 'anggarans.id', '=', 'spd_rincis.anggaran_id')
+        ->leftJoin('spds', 'spd_rincis.spd_id', '=', 'spds.id')
+        ->join('rekenings', 'anggarans.rekening_id', '=', 'rekenings.id')
+        ->join('subs', 'anggarans.sub_id', '=', 'subs.id')
+        ->join('kegiatans', 'subs.kegiatan_id', '=', 'kegiatans.id')
+        ->join('programs', 'kegiatans.program_id', '=', 'programs.id')
+        ->groupBy(
+            'anggarans.uraian',
+            'anggarans.pagu',
+            'anggarans.sisa_pagu',
+            'rekenings.kode_rekening',
+            'rekenings.nama_rekening',
+            'subs.kode_sub',
+            'subs.nama_sub',
+            'kegiatans.kode_kegiatan',
+            'programs.kode_program',
+            'bulan'
+        );
+
+        $combinedQuery = $realisasiBelanja->unionAll($realisasiSpd);
+
 
         $realisasiBelanjaUnionSpd = DB::table(DB::raw("({$combinedQuery->toSql()}) as combined"))
             ->mergeBindings($combinedQuery)
@@ -305,4 +329,12 @@ class LaporanController extends Controller
     {
         //
     }
+
+    public function exportExcel()
+    {
+        $data = $this->laporanRealisasi()->getData()['realisasiBelanjaUnionSpd'];
+
+        return Excel::download(new LaporanRealisasiExport($data), 'laporan_realisasi.xlsx');
+    }
+
 }
