@@ -23,7 +23,7 @@ class DashboardController extends Controller
             ->join('kegiatans', 'subs.kegiatan_id', '=', 'kegiatans.id')
             ->join('programs', 'kegiatans.program_id', '=', 'programs.id')
             ->selectRaw('sum(pagu) as nilai, sum(sisa_pagu) as realisasi,nama_sub, kode_sub, kode_kegiatan, kode_program')
-            ->groupBy('nama_sub', 'kode_sub', 'kode_kegiatan', 'kode_program')
+            ->groupBy('subs.id','nama_sub', 'kode_sub', 'kode_kegiatan', 'kode_program')
             ->orderBy('subs.id', 'asc')
             ->get();
 

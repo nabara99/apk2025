@@ -64,7 +64,7 @@
                                                                 <i class="fa-solid fa-list"></i>
                                                             </a>
                                                         @endif  &nbsp;
-                                                        @if ($spd->pph21 || $spd->ppn)
+                                                        @if ($spd->pph21 || $spd->ppn || $spd->pph23)
                                                             <a href="{{ route('tax', $spd->id) }}" title="Input Pajak"
                                                                 class="btn btn-sm btn-success btn-icon">
                                                                 <i class="fa-solid fa-dollar"></i>
