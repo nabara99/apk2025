@@ -142,7 +142,7 @@
                                         <div class="col-2 col-md-2 col-sm-2">
                                             <label for="nilai_pajak">Nilai Pajak</label>
                                             <input type="text" name="nilai_pajak" id="nilai_pajak"
-                                                class="number-separator form-control" value="0" readonly>
+                                                class="number-separator form-control" value="0">
                                         </div>
                                             <input type="hidden" name="jenis_pajak" id="jenis_pajak"
                                                 class="form-control" readonly>
