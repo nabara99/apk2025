@@ -12,6 +12,7 @@ class PajakKwitansi extends Model
     protected $fillable = [
         'spd_id',
         'kwi_id',
+        'kwitu_id',
         'uraian_pajak',
         'billing',
         'ntpn',

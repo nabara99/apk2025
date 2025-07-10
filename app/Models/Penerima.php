@@ -17,4 +17,9 @@ class Penerima extends Model
         'rek_bank',
         'npwp'
     ];
+
+    public function kwitansiTus()
+    {
+        return $this->hasMany(KwitansiTu::class);
+    }
 }

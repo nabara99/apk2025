@@ -26,4 +26,9 @@ class Anggaran extends Model
     {
         return $this->belongsTo(Rekening::class);
     }
+
+    public function KwikwitansiTus()
+    {
+        return $this->hasMany(KwitansiTu::class);
+    }
 }

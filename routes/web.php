@@ -19,6 +19,10 @@ use App\Http\Controllers\SubController;
 use App\Http\Controllers\TempKwitansiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ViewDataController;
+use App\Http\Controllers\KwitansiTuController;
+use App\Http\Controllers\TempKwitansiTuController;
+use App\Http\Controllers\PajakKwitansiTuController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -73,4 +77,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('sk', SkController::class)->middleware('userAccess:user,admin');
     Route::post('/kib/upload', [KibController::class, 'upload'])->name('kib.upload');
     Route::get('/laporan-realisasi/export', [LaporanController::class, 'exportExcel'])->name('laporan.realisasi.export');
+
+    Route::resource('tu', KwitansiTuController::class);
+    Route::resource('tempkwitansitu', TempKwitansiTuController::class);
+    Route::get('/pajak-tu/{id}', [KwitansiTuController::class, 'pajak'])->name('pajak-tu');
+
+    Route::resource('pajak-kwitansi-tu', PajakKwitansiTuController::class);
+
 });

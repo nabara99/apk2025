@@ -68,11 +68,13 @@ class LaporanController extends Controller
             'subs.nama_sub as nama_sub',
             'kegiatans.kode_kegiatan as kode_kegiatan',
             'programs.kode_program as kode_program',
-            DB::raw('SUM(temp_kwitansis.total) AS total'),
-            DB::raw('MONTH(kwitansis.tgl) AS bulan')
+            DB::raw('SUM(COALESCE(temp_kwitansis.total, 0) + COALESCE(temp_kwitansi_tus.total, 0)) AS total'),
+            DB::raw('COALESCE(MONTH(kwitansis.tgl), MONTH(kwitansi_tus.tgl)) AS bulan')
         )
         ->leftJoin('temp_kwitansis', 'anggarans.id', '=', 'temp_kwitansis.anggaran_id')
         ->leftJoin('kwitansis', 'temp_kwitansis.kwitansi_id', '=', 'kwitansis.kw_id')
+        ->leftJoin('temp_kwitansi_tus', 'anggarans.id', '=', 'temp_kwitansi_tus.anggaran_id')
+        ->leftJoin('kwitansi_tus', 'temp_kwitansi_tus.kwitansi_id', '=', 'kwitansi_tus.kw_id')
         ->join('rekenings', 'anggarans.rekening_id', '=', 'rekenings.id')
         ->join('subs', 'anggarans.sub_id', '=', 'subs.id')
         ->join('kegiatans', 'subs.kegiatan_id', '=', 'kegiatans.id')
@@ -87,8 +89,9 @@ class LaporanController extends Controller
             'subs.nama_sub',
             'kegiatans.kode_kegiatan',
             'programs.kode_program',
-            'bulan'
+            DB::raw('COALESCE(MONTH(kwitansis.tgl), MONTH(kwitansi_tus.tgl))')
         );
+
 
         $realisasiSpd = DB::table('anggarans')
         ->select(
