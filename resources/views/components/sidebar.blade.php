@@ -47,6 +47,11 @@
                             class="fa-solid fa-cart-shopping"></i><span>Kwitansi
                         </span></a>
                 </li>
+                <li class="{{ str_contains(Route::currentRouteName(), 'tu') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('tu.index') }}"><i
+                            class="fa-solid fa-cart-shopping"></i><span>Kwitansi TU
+                        </span></a>
+                </li>
             @endif
             @if (auth()->user()->roles == 'admin')
                 <li class="menu-header">Anggaran</li>
