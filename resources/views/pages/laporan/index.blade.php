@@ -53,6 +53,46 @@
                             </div>
                         </form>
                     </div>
+                    <div class="card card-success">
+                        <form action="{{ route('laporan.tu') }}" method="POST" target="blank">
+                            @csrf
+                            <div class="card-header">
+                                <h4>Laporan Bendahara (TU)</h4>
+                                <div class="card-header-action">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-print"></i></button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 mb-1">
+                                        <select class="form-control @error('spd_id') is-invalid @enderror"
+                                            name="spd_id">
+                                            <option value="" selected disabled>-- Pilih SP2D TU --</option>
+                                            @foreach ($spds as $spd)
+                                                <option value="{{ $spd->id }}"
+                                                    {{ old('spd_id') == $spd->id ? 'selected' : '' }}>
+                                                    {{ $spd->no_spd }} {{ $spd->spd_uraian }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="">Tanggal Awal</label>
+                                            <input type="text" id="start_date" name="start_date"
+                                                class="form-control datepicker" value="{{ $startDate ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="">Tanggal Akhir</label>
+                                            <input type="text" id="end_date" name="end_date"
+                                                class="form-control datepicker" value="{{ $endDate ?? '' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <div class="card card-primary">
                         <form action="{{ route('laporan.pajak') }}" method="POST" target="blank">
                             @csrf

@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('spdrinci', SpdRinciController::class);
     Route::resource('laporan', LaporanController::class);
     Route::post('/laporanbendahara', [LaporanController::class, 'laporanBendahara'])->name('laporan.bendahara');
+    Route::post('/laporantu', [LaporanController::class, 'laporanTu'])->name('laporan.tu');
     Route::get('/laporanrealisasi', [LaporanController::class, 'laporanRealisasi'])->name('laporan.realisasi');
     Route::post('/laporan-pajak-pusat', [LaporanController::class, 'laporanPajakPusat'])->name('laporan.pajak');
     Route::post('/laporan-pajak-daerah', [LaporanController::class, 'laporanPajakDaerah'])->name('laporan.pajakdaerah');

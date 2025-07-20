@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\RealisasiBelanjaExport;
+use App\Models\Spd;
 
 class LaporanController extends Controller
 {
@@ -17,7 +18,8 @@ class LaporanController extends Controller
      */
     public function index()
     {
-        return view('pages.laporan.index');
+        $spds = Spd::where('jenis', 'TU')->get();
+        return view('pages.laporan.index', compact('spds'));
     }
 
     public function laporanBendahara(Request $request)
@@ -52,6 +54,49 @@ class LaporanController extends Controller
             'startDate' => $startDate,
             'endDate' => $endDate,
             'decision' => $decision,
+        ]);
+    }
+
+    public function laporanTu(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $spdTu = $request->input('spd_id');
+
+        $spd = Spd::find($spdTu);
+
+        if (!$spd) {
+            return back()->with('error', 'Data SP2D tidak ditemukan.');
+        }
+
+        $realisasiBelanja = DB::table('temp_kwitansi_tus')
+            ->join('kwitansi_tus', 'temp_kwitansi_tus.kwitansi_id', '=', 'kwitansi_tus.kw_id')
+            ->join('anggarans', 'temp_kwitansi_tus.anggaran_id', '=', 'anggarans.id')
+            ->join('rekenings', 'anggarans.rekening_id', '=', 'rekenings.id')
+            ->join('subs', 'anggarans.sub_id', '=', 'subs.id')
+            ->join('kegiatans', 'subs.kegiatan_id', '=', 'kegiatans.id')
+            ->join('programs', 'kegiatans.program_id', '=', 'programs.id')
+            ->select(
+                'kode_program',
+                'kode_kegiatan',
+                'kode_sub',
+                'nama_sub',
+                'kode_rekening',
+                'nama_rekening',
+                DB::raw('SUM(total) AS total_realisasi')
+            )
+            ->whereBetween('tgl', [$startDate, $endDate])
+            ->groupBy('kode_program', 'kode_kegiatan', 'kode_sub', 'kode_rekening', 'nama_sub', 'nama_rekening')
+            ->get();
+
+        $decision = Decision::first();
+
+        return view('pages.laporan.laporan_tu', [
+            'realisasiBelanja' => $realisasiBelanja,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'decision' => $decision,
+            'spd' => $spd
         ]);
     }
 
