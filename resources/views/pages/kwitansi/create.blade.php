@@ -250,25 +250,33 @@
                     </div>
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-6"><label for="ppn">PPN</label>
+                            <div class="col-4"><label for="ppn">PPN</label>
                                 <input type="text" class="number-separator form-control" id="ppn"
                                     name="ppn">
                             </div>
-                            <div class="col-6"><label for="pph21">PPh 21</label>
+                            <div class="col-4"><label for="pph21">PPh 21</label>
                                 <input type="text" class="number-separator form-control" id="pph21"
                                     name="pph21">
+                            </div>
+                            <div class="col-4"><label for="pph_final">PPh Final</label>
+                                <input type="text" class="number-separator form-control" id="pph_final"
+                                    name="pph_final">
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-6"><label for="pph22">PPh 22</label>
+                            <div class="col-4"><label for="pph22">PPh 22</label>
                                 <input type="text" class="number-separator form-control" id="pph22"
                                     name="pph22">
                             </div>
-                            <div class="col-6"><label for="pph23">PPh 23</label>
+                            <div class="col-4"><label for="pph23">PPh 23</label>
                                 <input type="text" class="number-separator form-control" id="pph23"
                                     name="pph23">
+                            </div>
+                            <div class="col-4"> <label for="pajakdaerah">Pajak Daerah</label>
+                                <input type="text" class="number-separator form-control" id="pajakdaerah"
+                                    name="pajakdaerah">
                             </div>
                         </div>
                     </div>
@@ -286,10 +294,6 @@
                     </div>
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-6"> <label for="pajakdaerah">Pajak Daerah</label>
-                                <input type="text" class="number-separator form-control" id="pajakdaerah"
-                                    name="pajakdaerah">
-                            </div>
                             <div class="col-6">
                                 <label for="sisa">Sisa Pembayaran</label>
                                 <input type="text" class="form-control" id="sisa" name="sisa" readonly>
@@ -522,9 +526,10 @@
             var pph23 = parseFloat($('#pph23').val().replace(/[^0-9.-]/g, '')) || 0;
             var iwp1 = parseFloat($('#iwp1').val().replace(/[^0-9.-]/g, '')) || 0;
             var iwp8 = parseFloat($('#iwp8').val().replace(/[^0-9.-]/g, '')) || 0;
+            var pph_final = parseFloat($('#pph_final').val().replace(/[^0-9.-]/g, '')) || 0;
             var pajakdaerah = parseFloat($('#pajakdaerah').val().replace(/[^0-9.-]/g, '')) || 0;
 
-            var total_pajak = ppn + pph21 + pph22 + pph23 + pajakdaerah + iwp1 + iwp8;
+            var total_pajak = ppn + pph21 + pph22 + pph23 + pajakdaerah + iwp1 + iwp8 + pph_final;
 
             var sisa_pembayaran = total_belanja - total_pajak;
 
@@ -768,6 +773,7 @@
                 var pph23 = $('#pph23').val();
                 var iwp1 = $('#iwp1').val();
                 var iwp8 = $('#iwp8').val();
+                var pph_final = $('#pph_final').val();
                 var pajakdaerah = $('#pajakdaerah').val();
                 var sisa = $('#sisa').val();
                 var anggaran_id = $('#anggaran_id').val();
@@ -808,6 +814,7 @@
                         pph23: pph23,
                         iwp1: iwp1,
                         iwp8: iwp8,
+                        pph_final: pph_final,
                         pajakdaerah: pajakdaerah,
                         sisa: sisa,
                         anggaran_id: anggaran_id,

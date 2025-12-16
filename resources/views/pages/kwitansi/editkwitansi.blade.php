@@ -133,6 +133,12 @@
                                     <div class="form-group">
                                         <div class="row gutters-sm">
                                             <div class="col-2 col-md-2 col-sm-2">
+                                                <label for="pph_final">PPh Final</label>
+                                                <input type="text" class="number-separator form-control"
+                                                    id="pph_final" name="pph_final"
+                                                    value="{{ number_format($kwitansis->pph_final) }}">
+                                            </div>
+                                            <div class="col-2 col-md-2 col-sm-2">
                                                 <label for="iwp1">IWP 1</label>
                                                 <input type="text" class="number-separator form-control"
                                                     id="iwp1" name="iwp1"
@@ -505,8 +511,9 @@
             var iwp1 = parseFloat($('#iwp1').val().replace(/[^0-9.-]/g, '')) || 0;
             var iwp8 = parseFloat($('#iwp8').val().replace(/[^0-9.-]/g, '')) || 0;
             var pdaerah = parseFloat($('#pdaerah').val().replace(/[^0-9.-]/g, '')) || 0;
+            var pph_final = parseFloat($('#pph_final').val().replace(/[^0-9.-]/g, '')) || 0;
 
-            var total_pajak = ppn + pph21 + pph22 + pph23 + pdaerah + iwp1 + iwp8;
+            var total_pajak = ppn + pph21 + pph22 + pph23 + pdaerah + iwp1 + iwp8 + pph_final;
 
             var sisa_pembayaran = total_belanja - total_pajak;
 
@@ -596,7 +603,7 @@
                 closeOnSelect: false
             });
 
-            $('#ppn, #pph21, #pph22, #pph23, #pdaerah').on('input', function() {
+            $('#ppn, #pph21, #pph22, #pph23, #pdaerah, #iwp1, #pph_final, #iwp8').on('input', function() {
                 hitungSisa();
             });
 

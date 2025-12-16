@@ -61,7 +61,7 @@ class KwitansiController extends Controller
     public function store(Request $request)
     {
         try {
-            $requiredInputs = ['kwitansi_id', 'tgl', 'hal', 'total_belanja', 'idpenerima', 'ppn', 'pph21', 'pph22', 'pph23', 'pajakdaerah', 'sisa', 'anggaran_id'];
+            $requiredInputs = ['kwitansi_id', 'tgl', 'hal', 'total_belanja', 'idpenerima', 'ppn', 'pph21', 'pph22', 'pph23', 'pph_final', 'pajakdaerah', 'sisa', 'anggaran_id'];
             foreach ($requiredInputs as $input) {
                 if (!$request->has($input)) {
                     return response()->json(['message' => 'Data tidak lengkap'], 400);
@@ -84,6 +84,7 @@ class KwitansiController extends Controller
                 'pdaerah' => str_replace(",", "", $request->input('pajakdaerah')),
                 'iwp1' => str_replace(",", "", $request->input('iwp1')),
                 'iwp8' => str_replace(",", "", $request->input('iwp8')),
+                'pph_final' => str_replace(",", "", $request->input('pph_final')),
                 'sisa' => str_replace(",", "", $request->input('sisa')),
             ]);
 
@@ -138,6 +139,7 @@ class KwitansiController extends Controller
             'pdaerah' => str_replace(",", "", $request->pdaerah),
             'iwp1' => str_replace(",", "", $request->iwp1),
             'iwp8' => str_replace(",", "", $request->iwp8),
+            'pph_final' => str_replace(",", "", $request->pph_final),
             'sisa' => str_replace(",", "", $request->sisa),
             'penerima_id' => $request->penerima_id,
             'anggaran_id' => $request->anggaran_id,

@@ -51,6 +51,7 @@ class SpdController extends Controller
         $spd->pph22 = str_replace(",", "", $request->pph22);
         $spd->pph23 = str_replace(",", "", $request->pph23);
         $spd->ppn = str_replace(",", "", $request->ppn);
+        $spd->pph_final = str_replace(",", "", $request->pph_final);
 
         $spd->save();
         return redirect()->route('spd.index')->with('success', 'SP2D berhasil disimpan');
@@ -92,6 +93,7 @@ class SpdController extends Controller
             'pph22' => str_replace(",", "", $request->pph22),
             'pph23' => str_replace(",", "", $request->pph23),
             'ppn' => str_replace(",", "", $request->ppn),
+            'pph_final' => str_replace(",", "", $request->pph_final),
         ]);
 
         return redirect()->route('spd.index')->with('success', 'SP2D berhasil diupdate');

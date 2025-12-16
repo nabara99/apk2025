@@ -24,6 +24,7 @@ class Kwitansi extends Model
         'pdaerah',
         'iwp1',
         'iwp8',
+        'pph_final',
         'sisa',
         'penerima_id',
         'anggaran_id',

@@ -21,5 +21,6 @@ class Spd extends Model
         'pph22',
         'pph23',
         'ppn',
+        'pph_final',
     ];
 }

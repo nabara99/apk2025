@@ -91,41 +91,49 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-2 col-md-2 col-sm-2">
+                                            <div class="col-3 col-md-3 col-sm-3">
                                                 <label>IWP 1%</label>
                                                 <input type="text" value="0"
                                                     class="number-separator form-control"
                                                     name="iwp1">
                                             </div>
-                                            <div class="col-2 col-md-2 col-sm-2">
+                                            <div class="col-3 col-md-3 col-sm-3">
                                                 <label>IWP 8%</label>
                                                 <input type="text" value="0"
                                                     class="number-separator form-control"
                                                     name="iwp8">
                                             </div>
-                                            <div class="col-2 col-md-2 col-sm-2">
+                                            <div class="col-3 col-md-3 col-sm-3">
                                                 <label>PPh21</label>
                                                 <input type="text" value="0"
                                                     class="number-separator form-control"
                                                     name="pph21">
                                             </div>
-                                            <div class="col-2 col-md-2 col-sm-2">
+                                            <div class="col-3 col-md-3 col-sm-3">
                                                 <label>PPh22</label>
                                                 <input type="text" value="0"
                                                     class="number-separator form-control"
                                                     name="pph22">
                                             </div>
-                                            <div class="col-2 col-md-2 col-sm-2">
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-3 col-md-3 col-sm-3">
                                                 <label>PPh23</label>
                                                 <input type="text" value="0"
                                                     class="number-separator form-control"
                                                     name="pph23">
                                             </div>
-                                            <div class="col-2 col-md-2 col-sm-2">
+                                            <div class="col-3 col-md-3 col-sm-3">
                                                 <label>PPN</label>
                                                 <input type="text" value="0"
                                                     class="number-separator form-control"
                                                     name="ppn">
+                                            </div>
+                                            <div class="col-2 col-md-2 col-sm-2">
+                                                <label>PPh Final</label>
+                                                <input type="text" value="0"
+                                                    class="number-separator form-control"
+                                                    name="pph_final">
                                             </div>
                                         </div>
                                     </div>

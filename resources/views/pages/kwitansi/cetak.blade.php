@@ -154,6 +154,17 @@ setlocale(LC_TIME, 'id_ID');
                 {{ number_format($kwitansi->pph21) }},-
             </td>
         </tr>
+        @if ($kwitansi->pph_final)
+            <tr style="font-size: 8pt;">
+                <td>PPh Final</td>
+                <td>:</td>
+                <td>Rp. </td>
+                <td style="text-align: right;">
+                    {{ number_format($kwitansi->pph_final) }},-
+                </td>
+            </tr>
+
+        @endif
         @if ($kwitansi->pph22)
             <tr style="font-size: 8pt;">
                 <td>PPh 22</td>

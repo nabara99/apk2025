@@ -100,6 +100,20 @@
                                                 });
                                             </script>
                                         @endif
+                                        @if ($spd->pph_final > 1)
+                                            <div class="col-2 col-md-2 col-sm-2">
+                                                <label for="pph_final">PPh Final</label>
+                                                <div class="input-group">
+                                                    <button class="btn btn-info" id="pph_final">{{number_format($spd->pph_final)}}</button>
+                                                </div>
+                                            </div>
+                                            <script>
+                                                document.getElementById('pph_final').addEventListener('click', function () {
+                                                    setNilaiPajak({{ $spd->pph_final }}, 'PPhFinal');
+                                                });
+                                            </script>
+
+                                        @endif
                                         @if($spd->pph21 > 1)
                                             <div class="col-2 col-md-2 col-sm-2">
                                                 <label for="pph21">PPh 21</label>
