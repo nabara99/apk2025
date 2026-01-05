@@ -6,6 +6,7 @@ use App\Exports\LaporanRealisasiExport;
 use App\Exports\LaporanRenjaExport;
 use App\Exports\LaporanPajakPusatExport;
 use App\Exports\LaporanSpdExport;
+use App\Exports\RekapBelanjaExport;
 use App\Models\Decision;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -332,6 +333,141 @@ class LaporanController extends Controller
         ]);
     }
 
+    public function rekapBelanja(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Query untuk kwitansi biasa dan TU
+        $realisasiBelanja = DB::table('rekenings')
+            ->select(
+                'rekenings.kode_rekening',
+                'rekenings.nama_rekening',
+                DB::raw('SUM(COALESCE(temp_kwitansis.total, 0) + COALESCE(temp_kwitansi_tus.total, 0)) AS total'),
+                DB::raw('COALESCE(MONTH(kwitansis.tgl), MONTH(kwitansi_tus.tgl)) AS bulan')
+            )
+            ->leftJoin('anggarans', 'rekenings.id', '=', 'anggarans.rekening_id')
+            ->leftJoin('temp_kwitansis', 'anggarans.id', '=', 'temp_kwitansis.anggaran_id')
+            ->leftJoin('kwitansis', 'temp_kwitansis.kwitansi_id', '=', 'kwitansis.kw_id')
+            ->leftJoin('temp_kwitansi_tus', 'anggarans.id', '=', 'temp_kwitansi_tus.anggaran_id')
+            ->leftJoin('kwitansi_tus', 'temp_kwitansi_tus.kwitansi_id', '=', 'kwitansi_tus.kw_id')
+            ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                $query->where(function ($q) use ($startDate, $endDate) {
+                    $q->whereBetween('kwitansis.tgl', [$startDate, $endDate])
+                      ->orWhereBetween('kwitansi_tus.tgl', [$startDate, $endDate]);
+                });
+            })
+            ->groupBy(
+                'rekenings.kode_rekening',
+                'rekenings.nama_rekening',
+                DB::raw('COALESCE(MONTH(kwitansis.tgl), MONTH(kwitansi_tus.tgl))')
+            );
+
+        // Query untuk SPD
+        $realisasiSpd = DB::table('rekenings')
+            ->select(
+                'rekenings.kode_rekening',
+                'rekenings.nama_rekening',
+                DB::raw('SUM(spd_rincis.total) AS total'),
+                DB::raw('MONTH(spds.spd_tgl) AS bulan')
+            )
+            ->leftJoin('anggarans', 'rekenings.id', '=', 'anggarans.rekening_id')
+            ->leftJoin('spd_rincis', 'anggarans.id', '=', 'spd_rincis.anggaran_id')
+            ->leftJoin('spds', 'spd_rincis.spd_id', '=', 'spds.id')
+            ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('spds.spd_tgl', [$startDate, $endDate]);
+            })
+            ->groupBy(
+                'rekenings.kode_rekening',
+                'rekenings.nama_rekening',
+                'bulan'
+            );
+
+        $combinedQuery = $realisasiBelanja->unionAll($realisasiSpd);
+
+        // Agregasi per bulan
+        $rekapBelanja = DB::table(DB::raw("({$combinedQuery->toSql()}) as combined"))
+            ->mergeBindings($combinedQuery)
+            ->select(
+                'kode_rekening',
+                'nama_rekening',
+                DB::raw('SUM(CASE WHEN bulan = 1 THEN total ELSE 0 END) AS januari_total'),
+                DB::raw('SUM(CASE WHEN bulan = 2 THEN total ELSE 0 END) AS februari_total'),
+                DB::raw('SUM(CASE WHEN bulan = 3 THEN total ELSE 0 END) AS maret_total'),
+                DB::raw('SUM(CASE WHEN bulan = 4 THEN total ELSE 0 END) AS april_total'),
+                DB::raw('SUM(CASE WHEN bulan = 5 THEN total ELSE 0 END) AS mei_total'),
+                DB::raw('SUM(CASE WHEN bulan = 6 THEN total ELSE 0 END) AS juni_total'),
+                DB::raw('SUM(CASE WHEN bulan = 7 THEN total ELSE 0 END) AS juli_total'),
+                DB::raw('SUM(CASE WHEN bulan = 8 THEN total ELSE 0 END) AS agustus_total'),
+                DB::raw('SUM(CASE WHEN bulan = 9 THEN total ELSE 0 END) AS september_total'),
+                DB::raw('SUM(CASE WHEN bulan = 10 THEN total ELSE 0 END) AS oktober_total'),
+                DB::raw('SUM(CASE WHEN bulan = 11 THEN total ELSE 0 END) AS november_total'),
+                DB::raw('SUM(CASE WHEN bulan = 12 THEN total ELSE 0 END) AS desember_total')
+            )
+            ->groupBy('kode_rekening', 'nama_rekening')
+            ->orderBy('kode_rekening', 'asc')
+            ->get();
+
+        // Ambil data pagu per rekening
+        $paguPerRekening = DB::table('anggarans')
+            ->join('rekenings', 'anggarans.rekening_id', '=', 'rekenings.id')
+            ->select(
+                'rekenings.kode_rekening',
+                DB::raw('SUM(anggarans.pagu) as total_pagu')
+            )
+            ->groupBy('rekenings.kode_rekening')
+            ->pluck('total_pagu', 'kode_rekening');
+
+        // Gabungkan data pagu ke rekapBelanja
+        $rekapBelanja = $rekapBelanja->map(function ($item) use ($paguPerRekening) {
+            $item->pagu = $paguPerRekening[$item->kode_rekening] ?? 0;
+            return $item;
+        });
+
+        // Menghitung total per bulan dan total pagu
+        $totalJanuari = $totalFebruari = $totalMaret = $totalApril = $totalMei = $totalJuni = 0;
+        $totalJuli = $totalAgustus = $totalSeptember = $totalOktober = $totalNovember = $totalDesember = 0;
+        $totalPagu = 0;
+
+        foreach ($rekapBelanja as $rekap) {
+            $totalPagu += $rekap->pagu;
+            $totalJanuari += $rekap->januari_total;
+            $totalFebruari += $rekap->februari_total;
+            $totalMaret += $rekap->maret_total;
+            $totalApril += $rekap->april_total;
+            $totalMei += $rekap->mei_total;
+            $totalJuni += $rekap->juni_total;
+            $totalJuli += $rekap->juli_total;
+            $totalAgustus += $rekap->agustus_total;
+            $totalSeptember += $rekap->september_total;
+            $totalOktober += $rekap->oktober_total;
+            $totalNovember += $rekap->november_total;
+            $totalDesember += $rekap->desember_total;
+        }
+
+        $decision = Decision::first();
+
+        return view('pages.laporan.rekap_belanja', compact(
+            'rekapBelanja',
+            'totalJanuari',
+            'totalFebruari',
+            'totalMaret',
+            'totalApril',
+            'totalMei',
+            'totalJuni',
+            'totalJuli',
+            'totalAgustus',
+            'totalSeptember',
+            'totalOktober',
+            'totalNovember',
+            'totalDesember',
+            'totalPagu',
+            'decision',
+            'startDate',
+            'endDate'
+        ));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -443,6 +579,144 @@ class LaporanController extends Controller
         return Excel::download(
             new LaporanSpdExport($spds, $startDate, $endDate, $jenisSpd, $decision),
             $fileName
+        );
+    }
+
+    public function exportRekapBelanja(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Query untuk kwitansi biasa dan TU
+        $realisasiBelanja = DB::table('rekenings')
+            ->select(
+                'rekenings.kode_rekening',
+                'rekenings.nama_rekening',
+                DB::raw('SUM(COALESCE(temp_kwitansis.total, 0) + COALESCE(temp_kwitansi_tus.total, 0)) AS total'),
+                DB::raw('COALESCE(MONTH(kwitansis.tgl), MONTH(kwitansi_tus.tgl)) AS bulan')
+            )
+            ->leftJoin('anggarans', 'rekenings.id', '=', 'anggarans.rekening_id')
+            ->leftJoin('temp_kwitansis', 'anggarans.id', '=', 'temp_kwitansis.anggaran_id')
+            ->leftJoin('kwitansis', 'temp_kwitansis.kwitansi_id', '=', 'kwitansis.kw_id')
+            ->leftJoin('temp_kwitansi_tus', 'anggarans.id', '=', 'temp_kwitansi_tus.anggaran_id')
+            ->leftJoin('kwitansi_tus', 'temp_kwitansi_tus.kwitansi_id', '=', 'kwitansi_tus.kw_id')
+            ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                $query->where(function ($q) use ($startDate, $endDate) {
+                    $q->whereBetween('kwitansis.tgl', [$startDate, $endDate])
+                      ->orWhereBetween('kwitansi_tus.tgl', [$startDate, $endDate]);
+                });
+            })
+            ->groupBy(
+                'rekenings.kode_rekening',
+                'rekenings.nama_rekening',
+                DB::raw('COALESCE(MONTH(kwitansis.tgl), MONTH(kwitansi_tus.tgl))')
+            );
+
+        // Query untuk SPD
+        $realisasiSpd = DB::table('rekenings')
+            ->select(
+                'rekenings.kode_rekening',
+                'rekenings.nama_rekening',
+                DB::raw('SUM(spd_rincis.total) AS total'),
+                DB::raw('MONTH(spds.spd_tgl) AS bulan')
+            )
+            ->leftJoin('anggarans', 'rekenings.id', '=', 'anggarans.rekening_id')
+            ->leftJoin('spd_rincis', 'anggarans.id', '=', 'spd_rincis.anggaran_id')
+            ->leftJoin('spds', 'spd_rincis.spd_id', '=', 'spds.id')
+            ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('spds.spd_tgl', [$startDate, $endDate]);
+            })
+            ->groupBy(
+                'rekenings.kode_rekening',
+                'rekenings.nama_rekening',
+                'bulan'
+            );
+
+        $combinedQuery = $realisasiBelanja->unionAll($realisasiSpd);
+
+        // Agregasi per bulan
+        $rekapBelanja = DB::table(DB::raw("({$combinedQuery->toSql()}) as combined"))
+            ->mergeBindings($combinedQuery)
+            ->select(
+                'kode_rekening',
+                'nama_rekening',
+                DB::raw('SUM(CASE WHEN bulan = 1 THEN total ELSE 0 END) AS januari_total'),
+                DB::raw('SUM(CASE WHEN bulan = 2 THEN total ELSE 0 END) AS februari_total'),
+                DB::raw('SUM(CASE WHEN bulan = 3 THEN total ELSE 0 END) AS maret_total'),
+                DB::raw('SUM(CASE WHEN bulan = 4 THEN total ELSE 0 END) AS april_total'),
+                DB::raw('SUM(CASE WHEN bulan = 5 THEN total ELSE 0 END) AS mei_total'),
+                DB::raw('SUM(CASE WHEN bulan = 6 THEN total ELSE 0 END) AS juni_total'),
+                DB::raw('SUM(CASE WHEN bulan = 7 THEN total ELSE 0 END) AS juli_total'),
+                DB::raw('SUM(CASE WHEN bulan = 8 THEN total ELSE 0 END) AS agustus_total'),
+                DB::raw('SUM(CASE WHEN bulan = 9 THEN total ELSE 0 END) AS september_total'),
+                DB::raw('SUM(CASE WHEN bulan = 10 THEN total ELSE 0 END) AS oktober_total'),
+                DB::raw('SUM(CASE WHEN bulan = 11 THEN total ELSE 0 END) AS november_total'),
+                DB::raw('SUM(CASE WHEN bulan = 12 THEN total ELSE 0 END) AS desember_total')
+            )
+            ->groupBy('kode_rekening', 'nama_rekening')
+            ->orderBy('kode_rekening', 'asc')
+            ->get();
+
+        // Ambil data pagu per rekening
+        $paguPerRekening = DB::table('anggarans')
+            ->join('rekenings', 'anggarans.rekening_id', '=', 'rekenings.id')
+            ->select(
+                'rekenings.kode_rekening',
+                DB::raw('SUM(anggarans.pagu) as total_pagu')
+            )
+            ->groupBy('rekenings.kode_rekening')
+            ->pluck('total_pagu', 'kode_rekening');
+
+        // Gabungkan data pagu ke rekapBelanja
+        $rekapBelanja = $rekapBelanja->map(function ($item) use ($paguPerRekening) {
+            $item->pagu = $paguPerRekening[$item->kode_rekening] ?? 0;
+            return $item;
+        });
+
+        // Menghitung total per bulan dan total pagu
+        $totalJanuari = $totalFebruari = $totalMaret = $totalApril = $totalMei = $totalJuni = 0;
+        $totalJuli = $totalAgustus = $totalSeptember = $totalOktober = $totalNovember = $totalDesember = 0;
+        $totalPagu = 0;
+
+        foreach ($rekapBelanja as $rekap) {
+            $totalPagu += $rekap->pagu;
+            $totalJanuari += $rekap->januari_total;
+            $totalFebruari += $rekap->februari_total;
+            $totalMaret += $rekap->maret_total;
+            $totalApril += $rekap->april_total;
+            $totalMei += $rekap->mei_total;
+            $totalJuni += $rekap->juni_total;
+            $totalJuli += $rekap->juli_total;
+            $totalAgustus += $rekap->agustus_total;
+            $totalSeptember += $rekap->september_total;
+            $totalOktober += $rekap->oktober_total;
+            $totalNovember += $rekap->november_total;
+            $totalDesember += $rekap->desember_total;
+        }
+
+        $decision = Decision::first();
+
+        return Excel::download(
+            new RekapBelanjaExport(
+                $rekapBelanja,
+                $totalJanuari,
+                $totalFebruari,
+                $totalMaret,
+                $totalApril,
+                $totalMei,
+                $totalJuni,
+                $totalJuli,
+                $totalAgustus,
+                $totalSeptember,
+                $totalOktober,
+                $totalNovember,
+                $totalDesember,
+                $totalPagu,
+                $decision,
+                $startDate,
+                $endDate
+            ),
+            'rekap_belanja_' . date('Y-m-d', strtotime($startDate)) . '_' . date('Y-m-d', strtotime($endDate)) . '.xlsx'
         );
     }
 

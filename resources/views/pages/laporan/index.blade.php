@@ -208,6 +208,35 @@
                             </div>
                         </form>
                     </div>
+                    <div class="card card-info">
+                        <form action="{{ route('laporan.rekap-belanja') }}" method="GET" target="blank">
+                            @csrf
+                            <div class="card-header">
+                                <h4>Rekap Belanja Per Rekening</h4>
+                                <div class="card-header-action">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-print"></i></button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="">Tanggal Awal</label>
+                                            <input type="text" id="start_date" name="start_date"
+                                                class="form-control datepicker" value="{{ $startDate ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="">Tanggal Akhir</label>
+                                            <input type="text" id="end_date" name="end_date"
+                                                class="form-control datepicker" value="{{ $endDate ?? '' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>

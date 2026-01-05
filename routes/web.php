@@ -80,6 +80,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporan-realisasi/export', [LaporanController::class, 'exportExcel'])->name('laporan.realisasi.export');
     Route::get('/laporan-pajak-pusat/export', [LaporanController::class, 'exportPajakPusat'])->name('laporan.pajak-pusat.export');
     Route::get('/laporan-spd/export', [LaporanController::class, 'exportSpd'])->name('laporan.spd.export');
+    Route::get('/rekap-belanja', [LaporanController::class, 'rekapBelanja'])->name('laporan.rekap-belanja');
+    Route::get('/rekap-belanja/export', [LaporanController::class, 'exportRekapBelanja'])->name('laporan.rekap-belanja.export');
 
     Route::resource('tu', KwitansiTuController::class);
     Route::resource('tempkwitansitu', TempKwitansiTuController::class);
