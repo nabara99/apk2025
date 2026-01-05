@@ -15,6 +15,9 @@ setlocale(LC_TIME, 'id_ID');
 
 <body>
     <table style="width: 100%; border-collapse: collapse; text-align: center; font-family: arial; font-size: 8pt;">
+
+        <a href="{{ route('laporan.pajak-pusat.export', ['start_date' => $startDate, 'end_date' => $endDate]) }}" class="btn btn-success">Download Excel</a>
+
         <tr>
             <td colspan="3"><b>PEMERINTAH KABUPATEN TANAH BUMBU</b></td>
         </tr>

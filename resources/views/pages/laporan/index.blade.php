@@ -173,30 +173,35 @@
                             <div class="card-header">
                                 <h4>Rekap SP2D</h4>
                                 <div class="card-header-action">
-
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-print"></i></button>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-4">
+                                    <div class="col-12 mb-2">
+                                        <div class="form-group">
+                                            <label for="">Jenis SP2D (Optional)</label>
+                                            <select class="form-control" name="jenis_spd">
+                                                <option value="" selected>-- Semua Jenis SP2D --</option>
+                                                <option value="LS">LS (Langsung)</option>
+                                                <option value="UP">UP (Uang Persediaan)</option>
+                                                <option value="GU">GU (Ganti Uang)</option>
+                                                <option value="TU">TU (Tambah Uang)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
                                         <div class="form-group">
                                             <label for="">Tanggal Awal</label>
                                             <input type="text" id="start_date" name="start_date"
                                                 class="form-control datepicker" value="{{ $startDate ?? '' }}">
                                         </div>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-6">
                                         <div class="form-group">
                                             <label for="">Tanggal Akhir</label>
                                             <input type="text" id="end_date" name="end_date"
                                                 class="form-control datepicker" value="{{ $endDate ?? '' }}">
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label for="">Semua SP2D</label>
-                                            <button type="submit" class="btn btn-primary"><i
-                                                    class="fa fa-print"></i></button>
                                         </div>
                                     </div>
                                 </div>

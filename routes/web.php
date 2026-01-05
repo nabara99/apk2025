@@ -78,6 +78,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('sk', SkController::class)->middleware('userAccess:user,admin');
     Route::post('/kib/upload', [KibController::class, 'upload'])->name('kib.upload');
     Route::get('/laporan-realisasi/export', [LaporanController::class, 'exportExcel'])->name('laporan.realisasi.export');
+    Route::get('/laporan-pajak-pusat/export', [LaporanController::class, 'exportPajakPusat'])->name('laporan.pajak-pusat.export');
+    Route::get('/laporan-spd/export', [LaporanController::class, 'exportSpd'])->name('laporan.spd.export');
 
     Route::resource('tu', KwitansiTuController::class);
     Route::resource('tempkwitansitu', TempKwitansiTuController::class);

@@ -15,11 +15,14 @@ setlocale(LC_TIME, 'id_ID');
 
 <body>
     <table style="width: 100%; border-collapse: collapse; text-align: center; font-family: arial; font-size: 8pt;">
+
+        <a href="{{ route('laporan.spd.export', ['start_date' => $startDate, 'end_date' => $endDate, 'jenis_spd' => $jenisSpd]) }}" class="btn btn-success">Download Excel</a>
+
         <tr>
             <td colspan="3"><b>PEMERINTAH KABUPATEN TANAH BUMBU</b></td>
         </tr>
         <tr>
-            <td colspan="3"><b>REKAP SP2D</b></td>
+            <td colspan="3"><b>REKAP SP2D{{ !empty($jenisSpd) ? ' - ' . $jenisSpd : '' }}</b></td>
         </tr>
         <tr>
             <td colspan="3"><b>TAHUN ANGGARAN 2025</b></td>
@@ -29,6 +32,13 @@ setlocale(LC_TIME, 'id_ID');
             <td width="1%">:</td>
             <td width="50%" style="text-align: left;">Kecamatan Teluk Kepayang</td>
         </tr>
+        @if(!empty($jenisSpd))
+        <tr>
+            <td width="15%">&nbsp&nbsp&nbsp&nbsp Jenis SP2D</td>
+            <td width="1%">:</td>
+            <td width="50%" style="text-align: left;">{{ $jenisSpd }}</td>
+        </tr>
+        @endif
         <tr>
             <td colspan="3">
                 <br>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Exports\LaporanRealisasiExport;
 use App\Exports\LaporanRenjaExport;
+use App\Exports\LaporanPajakPusatExport;
+use App\Exports\LaporanSpdExport;
 use App\Models\Decision;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -307,26 +309,26 @@ class LaporanController extends Controller
     {
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
+        $jenisSpd = $request->input('jenis_spd');
 
-        $spds = DB::table('spds')
-            // ->select(
-            //     'kode_program',
-            //     'kode_kegiatan',
-            //     'kode_sub',
-            //     'nama_sub',
-            //     'kode_rekening',
-            //     'nama_rekening',
-            //     DB::raw('SUM(total) AS total_realisasi') // Hitung total realisasi
-            // )
-            ->whereBetween('spd_tgl', [$startDate, $endDate])
-            ->orderBy('spd_tgl', 'asc')
-            ->get();
+        $query = DB::table('spds')
+            ->whereBetween('spd_tgl', [$startDate, $endDate]);
+
+        // Filter by jenis if provided
+        if (!empty($jenisSpd)) {
+            $query->where('jenis', $jenisSpd);
+        }
+
+        $spds = $query->orderBy('spd_tgl', 'asc')->get();
 
         $decision = Decision::first();
 
         return view('pages.laporan.laporan_spd', [
             'spds' => $spds,
             'decision' => $decision,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'jenisSpd' => $jenisSpd,
         ]);
     }
 
@@ -383,6 +385,65 @@ class LaporanController extends Controller
         $data = $this->laporanRealisasi()->getData()['realisasiBelanjaUnionSpd'];
 
         return Excel::download(new LaporanRealisasiExport($data), 'laporan_realisasi.xlsx');
+    }
+
+    public function exportPajakPusat(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        $pajakPusat = DB::table('pajak_kwitansis')
+            ->join('spds', 'pajak_kwitansis.spd_id', '=', 'spds.id')
+            ->select(
+                'no_spd',
+                'kwi_id',
+                'uraian_pajak',
+                'jenis_pajak',
+                'nilai_pajak',
+                'billing',
+                'ntpn',
+                'ntb',
+                'tgl_setor',
+            )
+            ->whereBetween('tgl_setor', [$startDate, $endDate])
+            ->get();
+
+        $decision = Decision::first();
+
+        return Excel::download(
+            new LaporanPajakPusatExport($pajakPusat, $startDate, $endDate, $decision),
+            'laporan_pajak_pusat_' . date('Y-m-d', strtotime($startDate)) . '_' . date('Y-m-d', strtotime($endDate)) . '.xlsx'
+        );
+    }
+
+    public function exportSpd(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $jenisSpd = $request->input('jenis_spd');
+
+        $query = DB::table('spds')
+            ->whereBetween('spd_tgl', [$startDate, $endDate]);
+
+        // Filter by jenis if provided
+        if (!empty($jenisSpd)) {
+            $query->where('jenis', $jenisSpd);
+        }
+
+        $spds = $query->orderBy('spd_tgl', 'asc')->get();
+
+        $decision = Decision::first();
+
+        $fileName = 'laporan_spd';
+        if (!empty($jenisSpd)) {
+            $fileName .= '_' . strtolower($jenisSpd);
+        }
+        $fileName .= '_' . date('Y-m-d', strtotime($startDate)) . '_' . date('Y-m-d', strtotime($endDate)) . '.xlsx';
+
+        return Excel::download(
+            new LaporanSpdExport($spds, $startDate, $endDate, $jenisSpd, $decision),
+            $fileName
+        );
     }
 
 }
