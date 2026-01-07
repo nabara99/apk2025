@@ -111,7 +111,6 @@
                                             <option value="PPh22">PPh 22</option>
                                             <option value="PPh23">PPh 23</option>
                                             <option value="PPN">PPN</option>
-                                            <option value="Pdaerah">Pajak Daerah</option>
                                             <option value="PPhFinal">PPh Final</option>
                                         </select>
                                     </div>
