@@ -16,13 +16,13 @@ setlocale(LC_TIME, 'id_ID');
 <body>
     <table style="width: 100%; border-collapse: collapse; text-align: center; font-family: arial; font-size: 8pt;">
 
-        <a href="{{ route('laporan.pajak-pusat.export', ['start_date' => $startDate, 'end_date' => $endDate]) }}" class="btn btn-success">Download Excel</a>
+        <a href="{{ route('laporan.pajak-pusat.export', ['start_date' => $startDate, 'end_date' => $endDate, 'jenis_pajak' => $jenisPajak]) }}" class="btn btn-success">Download Excel</a>
 
         <tr>
             <td colspan="3"><b>PEMERINTAH KABUPATEN TANAH BUMBU</b></td>
         </tr>
         <tr>
-            <td colspan="3"><b>LAPORAN PAJAK PUSAT</b></td>
+            <td colspan="3"><b>LAPORAN PAJAK PUSAT{{ !empty($jenisPajak) ? ' - ' . strtoupper($jenisPajak) : '' }}</b></td>
         </tr>
         <tr>
             <td colspan="3"><b>Periode {{ Carbon::parse($startDate)->isoFormat('D MMMM Y') }} s.d. {{ Carbon::parse($endDate)->isoFormat('D MMMM Y') }}</b></td>
@@ -39,6 +39,13 @@ setlocale(LC_TIME, 'id_ID');
             <td width="1%">:</td>
             <td width="50%" style="text-align: left;"><?= date('Y', strtotime($startDate)) ?></td>
         </tr>
+        @if(!empty($jenisPajak))
+        <tr>
+            <td width="15%">&nbsp&nbsp&nbsp&nbsp Jenis Pajak</td>
+            <td width="1%">:</td>
+            <td width="50%" style="text-align: left;">{{ $jenisPajak }}</td>
+        </tr>
+        @endif
         <tr>
             <td colspan="3">
                 <br>

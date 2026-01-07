@@ -6,31 +6,24 @@
 <body>
     <table>
         <tr>
-            <td colspan="9"><b>PEMERINTAH KABUPATEN TANAH BUMBU</b></td>
+            <td colspan="8"><b>PEMERINTAH KABUPATEN TANAH BUMBU</b></td>
         </tr>
         <tr>
-            <td colspan="9"><b>LAPORAN PAJAK PUSAT{{ !empty($jenisPajak) ? ' - ' . strtoupper($jenisPajak) : '' }}</b></td>
+            <td colspan="8"><b>LAPORAN PAJAK DAERAH</b></td>
         </tr>
         <tr>
-            <td colspan="9"><b>Periode {{ date('d-m-Y', strtotime($startDate)) }} s.d. {{ date('d-m-Y', strtotime($endDate)) }}</b></td>
+            <td colspan="8"><b>Periode {{ date('d-m-Y', strtotime($startDate)) }} s.d. {{ date('d-m-Y', strtotime($endDate)) }}</b></td>
         </tr>
         <tr>
             <td>SKPD</td>
             <td>:</td>
-            <td colspan="7">Kecamatan Teluk Kepayang</td>
+            <td colspan="6">Kecamatan Teluk Kepayang</td>
         </tr>
         <tr>
             <td>Tahun Anggaran</td>
             <td>:</td>
-            <td colspan="7">{{ date('Y', strtotime($startDate)) }}</td>
+            <td colspan="6">{{ date('Y', strtotime($startDate)) }}</td>
         </tr>
-        @if(!empty($jenisPajak))
-        <tr>
-            <td>Jenis Pajak</td>
-            <td>:</td>
-            <td colspan="7">{{ $jenisPajak }}</td>
-        </tr>
-        @endif
     </table>
 
     <table border="1">
@@ -39,7 +32,6 @@
                 <th>No</th>
                 <th>SP2D</th>
                 <th>Uraian</th>
-                <th>Jenis Pajak</th>
                 <th>Kode Billing</th>
                 <th>Tgl Bayar</th>
                 <th>NTPN</th>
@@ -52,13 +44,12 @@
                 $totalNilaiPajak = 0;
                 $no = 1;
             @endphp
-            @foreach ($pajakPusat as $pajak)
-                @if ($pajak->jenis_pajak != 'Pdaerah')
+            @foreach ($pajakDaerah as $pajak)
+                @if ($pajak->jenis_pajak == 'Pdaerah')
                     <tr>
                         <td>{{ $no++ }}</td>
                         <td>{{ $pajak->no_spd }}</td>
-                        <td>{{ $pajak->jenis_pajak }} atas {{ $pajak->uraian_pajak }}</td>
-                        <td>{{ $pajak->jenis_pajak }}</td>
+                        <td>{{ $pajak->uraian_pajak }}</td>
                         <td>{{ $pajak->billing }}</td>
                         <td>{{ date('d-m-Y', strtotime($pajak->tgl_setor)) }}</td>
                         <td>{{ $pajak->ntpn }}</td>
@@ -73,7 +64,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="8"><b>Total</b></td>
+                <td colspan="7"><b>Total</b></td>
                 <td><b>{{ $totalNilaiPajak }}</b></td>
             </tr>
         </tfoot>

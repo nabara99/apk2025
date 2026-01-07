@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\LaporanRealisasiExport;
 use App\Exports\LaporanRenjaExport;
 use App\Exports\LaporanPajakPusatExport;
+use App\Exports\LaporanPajakDaerahExport;
 use App\Exports\LaporanSpdExport;
 use App\Exports\RekapBelanjaExport;
 use App\Models\Decision;
@@ -248,8 +249,9 @@ class LaporanController extends Controller
     {
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
+        $jenisPajak = $request->input('jenis_pajak');
 
-        $pajakPusat = DB::table('pajak_kwitansis')
+        $query = DB::table('pajak_kwitansis')
             ->join('spds', 'pajak_kwitansis.spd_id', '=', 'spds.id')
             ->select(
                 'no_spd',
@@ -262,8 +264,14 @@ class LaporanController extends Controller
                 'ntb',
                 'tgl_setor',
             )
-            ->whereBetween('tgl_setor', [$startDate, $endDate])
-            ->get();
+            ->whereBetween('tgl_setor', [$startDate, $endDate]);
+
+        // Filter by jenis_pajak if provided
+        if (!empty($jenisPajak)) {
+            $query->where('jenis_pajak', $jenisPajak);
+        }
+
+        $pajakPusat = $query->get();
 
         $decision = Decision::first();
 
@@ -271,6 +279,7 @@ class LaporanController extends Controller
             'pajakPusat' => $pajakPusat,
             'startDate' => $startDate,
             'endDate' => $endDate,
+            'jenisPajak' => $jenisPajak,
             'decision' => $decision,
         ]);
     }
@@ -527,8 +536,50 @@ class LaporanController extends Controller
     {
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
+        $jenisPajak = $request->input('jenis_pajak');
 
-        $pajakPusat = DB::table('pajak_kwitansis')
+        $query = DB::table('pajak_kwitansis')
+            ->join('spds', 'pajak_kwitansis.spd_id', '=', 'spds.id')
+            ->select(
+                'no_spd',
+                'kwi_id',
+                'uraian_pajak',
+                'jenis_pajak',
+                'nilai_pajak',
+                'billing',
+                'ntpn',
+                'ntb',
+                'tgl_setor',
+            )
+            ->whereBetween('tgl_setor', [$startDate, $endDate]);
+
+        // Filter by jenis_pajak if provided
+        if (!empty($jenisPajak)) {
+            $query->where('jenis_pajak', $jenisPajak);
+        }
+
+        $pajakPusat = $query->get();
+
+        $decision = Decision::first();
+
+        $fileName = 'laporan_pajak_pusat';
+        if (!empty($jenisPajak)) {
+            $fileName .= '_' . strtolower($jenisPajak);
+        }
+        $fileName .= '_' . date('Y-m-d', strtotime($startDate)) . '_' . date('Y-m-d', strtotime($endDate)) . '.xlsx';
+
+        return Excel::download(
+            new LaporanPajakPusatExport($pajakPusat, $startDate, $endDate, $jenisPajak, $decision),
+            $fileName
+        );
+    }
+
+    public function exportPajakDaerah(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        $pajakDaerah = DB::table('pajak_kwitansis')
             ->join('spds', 'pajak_kwitansis.spd_id', '=', 'spds.id')
             ->select(
                 'no_spd',
@@ -547,8 +598,8 @@ class LaporanController extends Controller
         $decision = Decision::first();
 
         return Excel::download(
-            new LaporanPajakPusatExport($pajakPusat, $startDate, $endDate, $decision),
-            'laporan_pajak_pusat_' . date('Y-m-d', strtotime($startDate)) . '_' . date('Y-m-d', strtotime($endDate)) . '.xlsx'
+            new LaporanPajakDaerahExport($pajakDaerah, $startDate, $endDate, $decision),
+            'laporan_pajak_daerah_' . date('Y-m-d', strtotime($startDate)) . '_' . date('Y-m-d', strtotime($endDate)) . '.xlsx'
         );
     }
 

@@ -79,6 +79,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/kib/upload', [KibController::class, 'upload'])->name('kib.upload');
     Route::get('/laporan-realisasi/export', [LaporanController::class, 'exportExcel'])->name('laporan.realisasi.export');
     Route::get('/laporan-pajak-pusat/export', [LaporanController::class, 'exportPajakPusat'])->name('laporan.pajak-pusat.export');
+    Route::get('/laporan-pajak-daerah/export', [LaporanController::class, 'exportPajakDaerah'])->name('laporan.pajak-daerah.export');
     Route::get('/laporan-spd/export', [LaporanController::class, 'exportSpd'])->name('laporan.spd.export');
     Route::get('/rekap-belanja', [LaporanController::class, 'rekapBelanja'])->name('laporan.rekap-belanja');
     Route::get('/rekap-belanja/export', [LaporanController::class, 'exportRekapBelanja'])->name('laporan.rekap-belanja.export');

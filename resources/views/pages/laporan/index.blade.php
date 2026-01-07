@@ -104,6 +104,17 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
+                                    <div class="col-12 mb-1">
+                                        <select class="form-control" name="jenis_pajak">
+                                            <option value="">-- Semua Jenis Pajak --</option>
+                                            <option value="PPh21">PPh 21</option>
+                                            <option value="PPh22">PPh 22</option>
+                                            <option value="PPh23">PPh 23</option>
+                                            <option value="PPN">PPN</option>
+                                            <option value="Pdaerah">Pajak Daerah</option>
+                                            <option value="PPhFinal">PPh Final</option>
+                                        </select>
+                                    </div>
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label for="">Tanggal Awal</label>

@@ -5,30 +5,27 @@ namespace App\Exports;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
-class LaporanPajakPusatExport implements FromView
+class LaporanPajakDaerahExport implements FromView
 {
-    protected $pajakPusat;
+    protected $pajakDaerah;
     protected $startDate;
     protected $endDate;
-    protected $jenisPajak;
     protected $decision;
 
-    public function __construct($pajakPusat, $startDate, $endDate, $jenisPajak, $decision)
+    public function __construct($pajakDaerah, $startDate, $endDate, $decision)
     {
-        $this->pajakPusat = $pajakPusat;
+        $this->pajakDaerah = $pajakDaerah;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
-        $this->jenisPajak = $jenisPajak;
         $this->decision = $decision;
     }
 
     public function view(): View
     {
-        return view('exports.laporan_pajak_pusat', [
-            'pajakPusat' => $this->pajakPusat,
+        return view('exports.laporan_pajak_daerah', [
+            'pajakDaerah' => $this->pajakDaerah,
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
-            'jenisPajak' => $this->jenisPajak,
             'decision' => $this->decision,
         ]);
     }
