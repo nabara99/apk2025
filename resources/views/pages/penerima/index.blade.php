@@ -61,16 +61,16 @@
                                                             <i class="fas fa-edit"></i>
                                                             Edit
                                                         </a>
-                                                        <form action="{{ route('penerima.destroy', $penerima->id) }}"
+                                                        {{-- <form action="{{ route('penerima.destroy', $penerima->id) }}"
                                                             method="POST" class="ml-2">
                                                             <input type="hidden" name="_method" value="DELETE" />
                                                             <input type="hidden" name="_token"
                                                                 value="{{ csrf_token() }}" />
-                                                            {{-- <button class="btn btn-sm btn-danger btn-icon confirm-delete"
+                                                            <button class="btn btn-sm btn-danger btn-icon confirm-delete"
                                                                 onclick="return confirm('Yakin menghapus data?')">
                                                                 <i class="fas fa-trash"></i> Hapus
-                                                            </button> --}}
-                                                        </form>
+                                                            </button>
+                                                        </form> --}}
                                                     </div>
                                                 </td>
                                             </tr>

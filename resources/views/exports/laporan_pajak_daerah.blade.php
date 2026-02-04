@@ -6,23 +6,23 @@
 <body>
     <table>
         <tr>
-            <td colspan="8"><b>PEMERINTAH KABUPATEN TANAH BUMBU</b></td>
+            <td colspan="9"><b>PEMERINTAH KABUPATEN TANAH BUMBU</b></td>
         </tr>
         <tr>
-            <td colspan="8"><b>LAPORAN PAJAK DAERAH</b></td>
+            <td colspan="9"><b>LAPORAN PAJAK DAERAH</b></td>
         </tr>
         <tr>
-            <td colspan="8"><b>Periode {{ date('d-m-Y', strtotime($startDate)) }} s.d. {{ date('d-m-Y', strtotime($endDate)) }}</b></td>
+            <td colspan="9"><b>Periode {{ date('d-m-Y', strtotime($startDate)) }} s.d. {{ date('d-m-Y', strtotime($endDate)) }}</b></td>
         </tr>
         <tr>
             <td>SKPD</td>
             <td>:</td>
-            <td colspan="6">Kecamatan Teluk Kepayang</td>
+            <td colspan="7">Kecamatan Teluk Kepayang</td>
         </tr>
         <tr>
             <td>Tahun Anggaran</td>
             <td>:</td>
-            <td colspan="6">{{ date('Y', strtotime($startDate)) }}</td>
+            <td colspan="7">{{ date('Y', strtotime($startDate)) }}</td>
         </tr>
     </table>
 
@@ -32,16 +32,18 @@
                 <th>No</th>
                 <th>SP2D</th>
                 <th>Uraian</th>
+                <th>Realisasi</th>
                 <th>Kode Billing</th>
+                <th>Tgl TNT</th>
+                <th>Jumlah Pajak</th>
                 <th>Tgl Bayar</th>
-                <th>NTPN</th>
-                <th>NTB</th>
-                <th>Nilai</th>
+                <th>Catering</th>
             </tr>
         </thead>
         <tbody>
             @php
                 $totalNilaiPajak = 0;
+                $totalNilaiBelanja = 0;
                 $no = 1;
             @endphp
             @foreach ($pajakDaerah as $pajak)
@@ -50,22 +52,28 @@
                         <td>{{ $no++ }}</td>
                         <td>{{ $pajak->no_spd }}</td>
                         <td>{{ $pajak->uraian_pajak }}</td>
-                        <td>{{ $pajak->billing }}</td>
-                        <td>{{ date('d-m-Y', strtotime($pajak->tgl_setor)) }}</td>
+                        <td>{{ $pajak->nilai_belanja }}</td>
                         <td>{{ $pajak->ntpn }}</td>
-                        <td>{{ $pajak->ntb }}</td>
+                        <td>{{ date('d-m-Y', strtotime($pajak->tgl_setor)) }}</td>
                         <td>{{ $pajak->nilai_pajak }}</td>
+                        <td>{{ date('d-m-Y', strtotime($pajak->tgl_setor)) }}</td>
+                        <td>Catering Nabil</td>
                     </tr>
                     @php
                         $totalNilaiPajak += $pajak->nilai_pajak;
+                        $totalNilaiBelanja += $pajak->nilai_belanja;
                     @endphp
                 @endif
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="7"><b>Total</b></td>
+                <td colspan="2"><b>Total</b></td>
+                <td></td>
+                <td><b>{{ $totalNilaiBelanja }}</b></td>
+                <td colspan="2"></td>
                 <td><b>{{ $totalNilaiPajak }}</b></td>
+                <td colspan="2"></td>
             </tr>
         </tfoot>
     </table>

@@ -49,16 +49,18 @@ setlocale(LC_TIME, 'id_ID');
                                 <th>No</th>
                                 <th>SP2D</th>
                                 <th>Uraian</th>
+                                <th>Realisasi</th>
                                 <th>Kode Billing</th>
+                                <th>Tgl TNT</th>
+                                <th>Jumlah Pajak</th>
                                 <th>Tgl Bayar</th>
-                                <th>NTPN</th>
-                                <th>NTB</th>
-                                <th>Nilai</th>
+                                <th>Catering</th>
                             </tr>
                         </thead>
                         <tbody>
                             @php
                                 $totalNilaiPajak = 0;
+                                $totalNilaiBelanja = 0;
                                 $no = 1;
                             @endphp
                             @foreach ($pajakDaerah as $index => $pajak)
@@ -68,21 +70,27 @@ setlocale(LC_TIME, 'id_ID');
                                         <td>{{$no++}}</td>
                                         <td>{{ $pajak->no_spd }}</td>
                                         <td style="text-align: left;">{{ $pajak->uraian_pajak }}</td>
-                                        <td>{{ $pajak->billing }}</td>
-                                        <td>{{ Carbon::parse($pajak->tgl_setor)->isoFormat('D MMMM Y') }}</td>
+                                        <td style="text-align: right;">{{ number_format($pajak->nilai_belanja) }}</td>
                                         <td>{{ $pajak->ntpn }}</td>
-                                        <td>{{ $pajak->ntb }}</td>
+                                        <td>{{ Carbon::parse($pajak->tgl_setor)->isoFormat('D MMMM Y') }}</td>
                                         <td style="text-align: right;">{{ number_format($pajak->nilai_pajak) }}</td>
+                                        <td>{{ Carbon::parse($pajak->tgl_setor)->isoFormat('D MMMM Y') }}</td>
+                                        <td>Catering Nabil</td>
                                     </tr>
                                     @php
                                         $totalNilaiPajak += $pajak->nilai_pajak;
+                                        $totalNilaiBelanja += $pajak->nilai_belanja;
                                     @endphp
                                 @endif
                             @endforeach
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="7">Total</td>
+                                <td colspan="2">Total</td>
+                                <td style="text-align: right;">
+                                    <strong>{{ number_format($totalNilaiBelanja) }}</strong>
+                                </td>
+                                <td colspan="5"></td>
                                 <td style="text-align: right;">
                                     <strong>{{ number_format($totalNilaiPajak) }}</strong>
                                 </td>

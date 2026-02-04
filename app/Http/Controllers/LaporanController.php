@@ -289,20 +289,32 @@ class LaporanController extends Controller
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
 
+        // Subquery untuk total SPD rincis per SPD
+        $spdRinciSubquery = DB::table('spd_rincis')
+            ->select('spd_id', DB::raw('SUM(total) as spd_total'))
+            ->groupBy('spd_id');
+
         $pajakDaerah = DB::table('pajak_kwitansis')
             ->join('spds', 'pajak_kwitansis.spd_id', '=', 'spds.id')
+            ->leftJoin('kwitansis', 'pajak_kwitansis.kwi_id', '=', 'kwitansis.kw_id')
+            ->leftJoin('kwitansi_tus', 'pajak_kwitansis.kwitu_id', '=', 'kwitansi_tus.kw_id')
+            ->leftJoinSub($spdRinciSubquery, 'spd_rinci_total', function ($join) {
+                $join->on('pajak_kwitansis.spd_id', '=', 'spd_rinci_total.spd_id');
+            })
             ->select(
-                'no_spd',
-                'kwi_id',
-                'uraian_pajak',
-                'jenis_pajak',
-                'nilai_pajak',
-                'billing',
-                'ntpn',
-                'ntb',
-                'tgl_setor',
+                'spds.no_spd',
+                'pajak_kwitansis.kwi_id',
+                'pajak_kwitansis.kwitu_id',
+                'pajak_kwitansis.uraian_pajak',
+                'pajak_kwitansis.jenis_pajak',
+                'pajak_kwitansis.nilai_pajak',
+                'pajak_kwitansis.billing',
+                'pajak_kwitansis.ntpn',
+                'pajak_kwitansis.ntb',
+                'pajak_kwitansis.tgl_setor',
+                DB::raw('COALESCE(kwitansis.nilai, kwitansi_tus.nilai, spd_rinci_total.spd_total, 0) as nilai_belanja')
             )
-            ->whereBetween('tgl_setor', [$startDate, $endDate])
+            ->whereBetween('pajak_kwitansis.tgl_setor', [$startDate, $endDate])
             ->get();
 
         $decision = Decision::first();
@@ -579,20 +591,32 @@ class LaporanController extends Controller
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
 
+        // Subquery untuk total SPD rincis per SPD
+        $spdRinciSubquery = DB::table('spd_rincis')
+            ->select('spd_id', DB::raw('SUM(total) as spd_total'))
+            ->groupBy('spd_id');
+
         $pajakDaerah = DB::table('pajak_kwitansis')
             ->join('spds', 'pajak_kwitansis.spd_id', '=', 'spds.id')
+            ->leftJoin('kwitansis', 'pajak_kwitansis.kwi_id', '=', 'kwitansis.kw_id')
+            ->leftJoin('kwitansi_tus', 'pajak_kwitansis.kwitu_id', '=', 'kwitansi_tus.kw_id')
+            ->leftJoinSub($spdRinciSubquery, 'spd_rinci_total', function ($join) {
+                $join->on('pajak_kwitansis.spd_id', '=', 'spd_rinci_total.spd_id');
+            })
             ->select(
-                'no_spd',
-                'kwi_id',
-                'uraian_pajak',
-                'jenis_pajak',
-                'nilai_pajak',
-                'billing',
-                'ntpn',
-                'ntb',
-                'tgl_setor',
+                'spds.no_spd',
+                'pajak_kwitansis.kwi_id',
+                'pajak_kwitansis.kwitu_id',
+                'pajak_kwitansis.uraian_pajak',
+                'pajak_kwitansis.jenis_pajak',
+                'pajak_kwitansis.nilai_pajak',
+                'pajak_kwitansis.billing',
+                'pajak_kwitansis.ntpn',
+                'pajak_kwitansis.ntb',
+                'pajak_kwitansis.tgl_setor',
+                DB::raw('COALESCE(kwitansis.nilai, kwitansi_tus.nilai, spd_rinci_total.spd_total, 0) as nilai_belanja')
             )
-            ->whereBetween('tgl_setor', [$startDate, $endDate])
+            ->whereBetween('pajak_kwitansis.tgl_setor', [$startDate, $endDate])
             ->get();
 
         $decision = Decision::first();
